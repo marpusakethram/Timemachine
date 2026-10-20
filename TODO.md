@@ -52,9 +52,10 @@ verified in this environment is called out on its own line.
 - [x] `npm run lint` (ESLint 9 with `eslint-config-next`)
 - [x] `npm test` (unit and integration)
 - [x] `npm run test:e2e` workflow and screenshot tests
-- [ ] **Demo video test** (`tests/e2e/demo.spec.ts`) can't record in this sandbox because the
-      installed Chromium doesn't match Playwright 1.64. It should run in CI, which installs
-      its own browser. The committed videos were built from real frames of the same steps.
+- [x] **Demo video test** (`tests/e2e/demo.spec.ts`) passes in GitHub Actions (the `verify`
+      job runs the whole browser suite). It can't save its video in the build sandbox, where
+      the installed Chromium doesn't match Playwright 1.64, so the committed videos were built
+      from real frames of the same steps.
 
 ## 9. Docs and config
 - [x] README with exact commands, screenshots, failure modes and scope limits

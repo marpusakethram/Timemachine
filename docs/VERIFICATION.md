@@ -10,7 +10,7 @@ after the Meta style redesign. No API key was set and no live model was called.
 | Unit and integration | `npm test` | 41 tests passed across 4 files |
 | Production build | `npm run build` | Passed, all app and API routes compiled |
 | Browser workflows | `npm run test:e2e` | 4 passed: 3 workflow tests and the screenshot capture |
-| Demo recording | `tests/e2e/demo.spec.ts` | Every click and assertion passed. Saving the video failed (see below) |
+| Demo recording | `tests/e2e/demo.spec.ts` | Passed in GitHub Actions. Locally, every step passed but the video couldn't be saved (see below) |
 | Licenses | `node scripts/audit-licenses.mjs` | 493 packages, 0 missing licenses |
 | npm audit | `npm audit` | 5 high, all one issue: `braces` inside `eslint-config-next` (see below) |
 | Visual check | | Desktop home, desktop workspace and mobile workspace screenshots reviewed |
@@ -33,8 +33,8 @@ In this sandbox, the installed Chromium build doesn't match Playwright 1.64, so 
 video recorder never writes a file. The demo test still runs every step and passes every
 assertion, then fails at `video.saveAs`. The videos in `docs/media` were made by running the
 same steps against the real app, saving a frame after each step, and joining them with
-FFmpeg. Nothing is mocked. CI installs a matching browser with `npx playwright install`, so
-the test should record on its own there. That wasn't confirmed from here.
+FFmpeg. Nothing is mocked. In GitHub Actions, which installs a matching browser, the
+`verify` job ran the full browser suite including this test and passed on commit `6b81b49`.
 
 ## The npm audit finding
 
