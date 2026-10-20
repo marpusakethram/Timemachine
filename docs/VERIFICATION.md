@@ -1,42 +1,64 @@
 # Verification, 20 October 2026
 
-Run on Linux with Node.js 22.22, Next.js 16, Playwright 1.64 and Chromium. No API key was
-set and no live model was called. This run was done after the B2B redesign.
+Run on Linux with Node.js 22.22, npm 10.9, Next.js 16.4.2, Playwright 1.64.1 and Chromium,
+after the Meta style redesign. No API key was set and no live model was called.
 
-| Check | Result |
-|---|---|
-| TypeScript | `npm run typecheck` passed |
-| Engine, edge cases and connector | `npm test`: 41 tests passed across 4 files |
-| Production build | `npm run build` passed, all app and API routes compiled |
-| Browser workflows | 3 Playwright workflow tests passed against the production build on port 3001 |
-| Demo recording | Rebuilt from real browser frames of the same demo steps (see below) |
-| Dependencies | `npm install` reported 0 vulnerabilities |
-| Licenses | 186 installed packages checked, 0 missing licenses |
-| Visual check | Desktop home, desktop workspace and mobile workspace screenshots reviewed |
+| Check | Command | Result |
+|---|---|---|
+| TypeScript | `npm run typecheck` | Passed |
+| Lint | `npm run lint` | Passed, 0 errors, 0 warnings |
+| Unit and integration | `npm test` | 41 tests passed across 4 files |
+| Production build | `npm run build` | Passed, all app and API routes compiled |
+| Browser workflows | `npm run test:e2e` | 4 passed: 3 workflow tests and the screenshot capture |
+| Demo recording | `tests/e2e/demo.spec.ts` | Every click and assertion passed. Saving the video failed (see below) |
+| Licenses | `node scripts/audit-licenses.mjs` | 493 packages, 0 missing licenses |
+| npm audit | `npm audit` | 5 high, all one issue: `braces` inside `eslint-config-next` (see below) |
+| Visual check | | Desktop home, desktop workspace and mobile workspace screenshots reviewed |
 
-The browser tests cover the live capital slider on the home page, creating and importing,
-picking a path, instant ownership changes, reloading saved data, JSON contents, CSV row
-count, the PNG file signature, a full share link round trip via the clipboard, reset to
-baseline, the no-key error, no sideways scrolling on mobile, and the AI suggestion review.
+## What the browser tests cover
 
-About the recording: in this sandbox, Playwright's built-in video recorder didn't produce
-a file (the installed Chromium build and Playwright version didn't match). So the
-`docs/media` videos were made by running the same steps as `tests/e2e/demo.spec.ts`
-against the real app, saving a frame after each step, and stitching them with FFmpeg.
-Nothing is faked. On a normal machine with `npx playwright install chromium`, the demo
-test records the WebM by itself.
+The live capital slider on the home page, creating a decision, a bad JSON import, importing
+the sample fixture, picking path C, ownership going from 83.3% to 71.4%, save and reload,
+JSON contents, CSV row count, the PNG file signature, a full share link round trip through
+the clipboard, reset to baseline, the "Gemini is not configured" error, no sideways scrolling
+at 390px, and the AI review step using a labeled test fixture.
 
-Integration tests hit the official SDK interface through labeled mocks: structured JSON
-config, the cache on disk, one fix-up retry, a limited 429 retry, input and consent checks,
-localhost origin handling, request caps that survive restarts, and budget access from
-several processes at once. These aren't live provider results.
+`tests/e2e/screens.spec.ts` drives the real app and saves the marketing screenshots in
+`public/screens`. The home, workspace and mobile shots in `docs/screenshots` come from
+`tests/e2e/workflow.spec.ts`.
 
-The engine's hand calculated sample outputs are checked against `fixtures/golden.json`.
-Tests cover zero revenue and burn, negative growth, zero starting cash, funding in months
-1 and 24, 0 and 100% gross margin, 100% churn, capex, hiring, dilution, missing valuation,
-supported outliers, baseline inheritance, sensitivity and repeatable fingerprints.
+## The demo video
 
-Not checked: live Gemini output or real free tier eligibility, browsers other than
-Chromium, multi-host public deployments, or real business outcomes. The optional
-Sharp/libvips packages carry LGPL obligations if you redistribute their binaries. This repo
-doesn't bundle those binaries.
+In this sandbox, the installed Chromium build doesn't match Playwright 1.64, so Playwright's
+video recorder never writes a file. The demo test still runs every step and passes every
+assertion, then fails at `video.saveAs`. The videos in `docs/media` were made by running the
+same steps against the real app, saving a frame after each step, and joining them with
+FFmpeg. Nothing is mocked. CI installs a matching browser with `npx playwright install`, so
+the test should record on its own there. That wasn't confirmed from here.
+
+## The npm audit finding
+
+`braces` (pulled in by `eslint-config-next` through `fast-glob` and `micromatch`) is flagged
+for a stack exhaustion bug with deeply nested patterns. It only runs at lint time on our own
+config globs and never ships to users. No patched `braces` release exists yet, and npm's
+`--force` fix downgrades to the Next 14 lint config, which doesn't fit Next 16. Left as is
+and tracked in `TODO.md`.
+
+## Integration tests
+
+These hit the official SDK interface through labeled mocks: structured JSON config, the disk
+cache, one fix-up retry, a limited 429 retry, input and consent checks, localhost origin
+handling, request caps that survive restarts, and budget access from several processes at
+once. These are not live provider results.
+
+The engine's hand calculated outputs are checked against `fixtures/golden.json`. Tests cover
+zero revenue and burn, negative growth, zero starting cash, funding in months 1 and 24, 0 and
+100% gross margin, 100% churn, capex, hiring, dilution, missing valuation, outliers, baseline
+inheritance, sensitivity and repeatable fingerprints.
+
+## Not verified
+
+- Live Gemini output, or whether any real model is on the free tier right now.
+- Browsers other than Chromium.
+- Public, multi-host deployments.
+- Any real business outcome.

@@ -19,9 +19,9 @@ installed packages and the committed lockfile. It covers everything installed lo
 dev tools included. Some optional packages are platform specific, so another machine
 might show a slightly different list. Those keep their own upstream licenses.
 
-What's bundled that isn't code: the Inter font, shipped through
-\`@fontsource-variable/inter\` under the SIL Open Font License 1.1. No third-party
-photos or videos. Lucide icons are ISC and the shadcn style button pattern is MIT.
+What's bundled that isn't code: the Mona Sans font, shipped through
+\`@fontsource-variable/mona-sans\` under the SIL Open Font License 1.1. No third-party
+photos or videos. The screenshots in \`public/screens\` and \`docs\` are of this app. Lucide icons are ISC and the shadcn style button pattern is MIT.
 
 Our MIT license only covers our own source and the original diagram. Every
 dependency keeps its own license, so keep their notices if you redistribute.

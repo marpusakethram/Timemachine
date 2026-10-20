@@ -29,14 +29,17 @@ path brief all read from the same results. AI output is never trusted as a calcu
 
 ## UI layout
 
-The home page (`components/decision-input.tsx`) has a sticky header, a hero with a live
-preview card, a stats band, a "how it works" section, the new decision form, and the
-workbench table of saved scenarios.
+The home page (`components/decision-input.tsx`) has a sticky header, a big centered
+headline, a hero tile with a real workspace screenshot and a live capital slider on top,
+a mosaic of real screenshots, the new decision form, and the table of saved decisions.
+
+The screenshots in `public/screens` come from `tests/e2e/screens.spec.ts`, which drives the
+real app. Rerun it after UI changes so the marketing page never shows an old version.
 
 The workspace (`components/workspace.tsx`) is an app shell: a sticky header with a
-breadcrumb and Save, a page header with export buttons, a path switcher, a KPI strip,
-then a three column grid with assumptions on the left, charts and comparisons in the
-middle, and the path brief on the right. Shared tokens and styles live in `app/globals.css`.
+breadcrumb and Save, a page header with export buttons, a path switcher (paths A, B, C),
+a KPI strip, then assumptions on the left, charts and comparisons in the middle, and the
+path brief on the right. Shared tokens and styles live in `app/globals.css`.
 
 ## Optional AI
 
@@ -69,6 +72,6 @@ a user database. There are no accounts, billing, bank or cloud storage flows.
 ## Shipping it
 
 The repo includes the lockfile, sample data, tests, screenshots, diagram and docs. People
-install with `npm ci`. CI runs the typecheck, Vitest, the production build and Playwright,
+install with `npm ci`. CI runs the typecheck, ESLint, Vitest, the production build and Playwright,
 all without an API key. You don't need paid hosting. A public deployment with Gemini turned
 on needs access control and a durable shared quota store.

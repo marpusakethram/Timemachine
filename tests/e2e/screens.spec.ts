@@ -1,0 +1,34 @@
+import { expect, test } from "@playwright/test";
+import fs from "node:fs/promises";
+// Captures the real screenshots shown on the home page. Run it after UI changes.
+const out = "public/screens";
+const shot = { type: "jpeg", quality: 82 } as const;
+test("capture marketing screenshots from the live app", async ({ browser }) => {
+  await fs.mkdir(out, { recursive: true });
+  const desk = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+  const page = await desk.newPage();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open the fictional SaaS demo" }).click();
+  await page.getByRole("button", { name: "C Raise $200k", exact: true }).click();
+  await expect(page.locator(".comparison-card.selected")).toContainText("83.3%");
+  await page.getByLabel("Capital raised", { exact: true }).fill("400000");
+  await expect(page.locator(".comparison-card.selected")).toContainText("71.4%");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page.getByRole("button", { name: "Dismiss message" }).click();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ ...shot, path: `${out}/workspace.jpg`, clip: { x: 0, y: 0, width: 1440, height: 860 } });
+  await page.locator('[aria-label="Scenario comparison"]').screenshot({ ...shot, path: `${out}/compare.jpg` });
+  await page.locator(".assumptions").screenshot({ ...shot, path: `${out}/assumptions.jpg` });
+  await page.locator(".sensitivity summary").click();
+  await page.locator(".sensitivity").screenshot({ ...shot, path: `${out}/sensitivity.jpg` });
+  await desk.close();
+  const phone = await browser.newContext({ viewport: { width: 390, height: 780 }, deviceScaleFactor: 2 });
+  const mobile = await phone.newPage();
+  await mobile.goto("/");
+  await mobile.getByRole("button", { name: "Open the fictional SaaS demo" }).click();
+  await mobile.getByRole("button", { name: "C Raise $200k", exact: true }).click();
+  await expect(mobile.locator(".comparison-card.selected")).toContainText("83.3%");
+  await mobile.evaluate(() => window.scrollTo(0, 0));
+  await mobile.screenshot({ ...shot, path: `${out}/mobile.jpg` });
+  await phone.close();
+});

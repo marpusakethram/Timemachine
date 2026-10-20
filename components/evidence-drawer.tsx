@@ -2,7 +2,7 @@ import { AlertTriangle, Eye, FlaskConical, ListChecks } from "lucide-react";
 import { Branch, Decision, SimulationResult } from "@/lib/simulation/models";
 import { money } from "./scenario-comparison";
 export function EvidenceDrawer({ decision, branch, result }: { decision: Decision; branch: Branch; result: SimulationResult }) {
-  return <aside className="evidence card"><div className="card-head"><div><span className="kicker">Path brief</span><h2>{branch.name}</h2></div></div>
+  return <aside className="evidence card"><div className="card-head"><h2>{branch.name}</h2></div>
     <p>{branch.thesis}</p><p className="fine-print">This is the starting hypothesis. Your current inputs drive the numbers.</p>
     <h3><ListChecks size={14} />What you control</h3><ul>{branch.actions.map((r, i) => <li key={i}>{r}</li>)}</ul>
     <h3 className="risk"><AlertTriangle size={14} />What could break</h3><ul>{branch.risks.map((r, i) => <li key={i}>{r}</li>)}</ul>
@@ -17,6 +17,6 @@ export function EvidenceDrawer({ decision, branch, result }: { decision: Decisio
     </dl>{result.founderOwnership === null && <p className="fine-print">Dilution is hidden because pre-money valuation is unknown (0).</p>}
     <p className="fine-print">Simple priced round. No SAFEs, preferences, option pools or later rounds. Customer counts use the same growth and churn factor as revenue.</p>
     <h3>Sources</h3>{decision.sources.map((s, i) => <p className="fine-print" key={i}>{s.kind}: {s.label}</p>)}
-    <p className="fine-print mono">Engine {result.engine_version} · input {result.inputHash}<br />Calculated {result.timestamp}</p></details>
+    <p className="fine-print">Engine {result.engine_version}, input {result.inputHash}<br />Calculated {result.timestamp}</p></details>
   </aside>;
 }

@@ -5,10 +5,10 @@ Run the app, open the fictional SaaS demo, and pick the raise path. A browser wi
 
 | Seconds | What happens |
 |---|---|
-| 0 to 3 | Show the decision and the three paths, then pick Raise $200k |
+| 0 to 3 | Show the decision and the three paths, then pick path C, Raise $200k |
 | 3 to 7 | Slide Capital raised from 200,000 toward 400,000 |
 | 7 to 11 | The cash line goes up and founder ownership drops from 83.3% to 71.4% |
-| 11 to 15 | Pick Bootstrap conservatively to compare runway and dilution |
+| 11 to 15 | Pick path A, Bootstrap conservatively, to compare runway and dilution |
 
 Want to record it yourself? Any screen recorder works, like the Windows Snipping Tool.
 Crop out the browser bar and close personal tabs. The screenshots in this repo come from

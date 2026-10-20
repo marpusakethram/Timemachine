@@ -6,6 +6,7 @@ Before you open a pull request, run:
 
 ```sh
 npm run typecheck
+npm run lint
 npm test
 npm run build
 npx playwright install chromium
@@ -18,6 +19,8 @@ A few house rules:
 - **Saved data format:** if you change the schema, decide on a schema version bump or a
   migration, and say so. Never quietly throw away someone's saved scenarios.
 - **AI stays optional:** the no-key demo has to keep working.
+- **Screenshots:** if you change the UI, run `npm run test:e2e` so `public/screens` and
+  `docs/screenshots` get recaptured from the real app.
 
 Please don't commit `.env.local`, API keys, `.data`, browser storage or private scenarios.
 Don't add paid services or automatic billing or failover. Never run model output as code.

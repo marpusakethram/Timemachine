@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fields, Field, Metadata, Values } from "@/lib/simulation/models";
 
 export function NumericField({ name, value, meta, onChange }: { name: Field; value: number; meta: Metadata; onChange: (value: number) => void }) {
   const f = fields[name];
   const [text, setText] = useState(String(value));
   const [error, setError] = useState("");
-  useEffect(() => { setText(String(value)); setError(""); }, [value]);
+  // Resync the text box when the value changes from outside (reset, baseline switch, AI apply).
+  const [synced, setSynced] = useState(value);
+  if (value !== synced) { setSynced(value); setText(String(value)); setError(""); }
   const update = (raw: string) => {
     setText(raw);
     const n = Number(raw);

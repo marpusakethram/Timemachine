@@ -8,13 +8,13 @@ needs no API key.
 - Save locally, and export or import JSON, a monthly CSV, a PNG or a small share link.
 - Optional Gemini suggestions with consent, a review step, operator checked free models,
   a request budget that survives restarts, and no paid fallback.
-- A clean, light B2B interface: a product style home page, an app shell workspace with a
-  KPI strip, and a mobile layout.
+- A modern, Meta style interface: a big headline, real app screenshots, a live slider on
+  the home page, an app shell workspace with a KPI strip, and a phone layout.
 - Comes with the architecture diagram (SVG and PNG), source, setup guide, assumptions,
   license list, screenshots and a real browser recording.
 
-Checked: TypeScript, production build, 41 unit and integration tests, and 4 browser
-workflows. npm audit reports zero vulnerabilities.
+Checked: TypeScript, ESLint, production build, 41 unit and integration tests, and 4
+browser tests. See `docs/VERIFICATION.md` for the demo video and npm audit notes.
 
 Run it with Node.js 22.12+: `npm ci`, then `npm run dev`.
 Open http://127.0.0.1:3000 and pick the fictional SaaS demo.
