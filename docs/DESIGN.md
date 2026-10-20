@@ -1,22 +1,48 @@
-# Frontend design direction
+# Design notes
 
-The user requested HyperFrames-guided frontend improvements. The deliverable remains
-the live Next.js app. HyperFrames' creative and motion guidance informs the visual
-hierarchy and transitions; no video player replaces interactive controls.
+**Who it's for:** founders, finance leads and board members who want to see what a
+decision does to cash and ownership before they commit. The look should feel like a
+trustworthy finance tool, not a toy and not a generic startup landing page.
 
-Palette: graphite/navy background `#0c1421`, ice-blue accent `#adcaff`, off-white
-foreground `#eaf1fc`. Branch colors identify paths, not quality or recommendations.
-Typography pairs system sans-serif controls with editorial Georgia italic accents.
-No remote font dependency or generated stock artwork.
+## The look
 
-The home page leads with a real capital-slider model, using the same deterministic
-engine as the workspace. Its illustrative chart has a fixed cash scale and explicitly
-labels the fictional scenario. The creation form follows the demonstration.
+Think of a clean ledger: cool paper, dark ink, one blue accent.
 
-The workspace leads with the branch map, then selected-path metrics and cash chart
-so changes can be seen near the assumption controls. Comparative detail follows.
+| Token | Light | Dark | Used for |
+|---|---|---|---|
+| Canvas | `#f3f4f1` | `#0f1216` | Page background |
+| Surface | `#fbfbf9` | `#161a20` | Panels and cards |
+| Ink | `#15191f` | `#eceee9` | Main text |
+| Muted ink | `#47505c` | `#b0b7c1` | Body copy and labels |
+| Accent | `#2f4bd8` | `#8ea2ff` | Buttons, links, the live cash line, the logo |
+| Danger | `#b4232f` | `#f08a93` | The zero-cash line and errors |
 
-Motion uses brief, differently paced transform/opacity entrances and interaction
-feedback. Values update immediately, without animated intermediate financial numbers.
-Reduced-motion preferences disable decorative motion. No autoplay or camera movement
-obstructs reading or operating the model.
+Light and dark mode follow your system setting. The three path colors (teal, amber,
+blue) are data colors so you can tell paths apart. They don't mean better or worse.
+
+**Type:** Schibsted Grotesk for headlines and big numbers, IBM Plex Sans for
+everything else. Both are self-hosted through Fontsource, so the app never calls a
+font server. Numbers in tables use tabular figures so columns line up.
+
+**Shapes:** controls get 6px corners, panels get 10px, pills are fully round.
+
+**Logo:** a solid blue square with "TM" in white. Same format as the Y Combinator
+logo, but in our own color so it doesn't read as a knockoff. The browser tab icon
+(`app/icon.svg`) matches it.
+
+## The pages
+
+**Home:** the hero is the real model, not a picture of it. The big founder ownership
+number changes as you drag the capital slider, using the same engine as the
+workspace. Below that: four quick facts, the actual equations next to a four-step
+"how it works", the form to start your own decision, and your saved decisions.
+
+**Workspace:** levers on the left, the decision map and cash chart in the middle,
+and the selected path's thinking on the right. Comparisons, the sensitivity lab, the
+optional AI panel and exports come after.
+
+## Motion
+
+There's one moment of motion on load: the hero's cash line draws itself in. Values
+update instantly when you drag, with no animated counting. Turning on reduced motion
+in your system turns all of it off.

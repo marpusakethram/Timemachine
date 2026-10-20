@@ -25,7 +25,7 @@ box(290, 270, 740, 110, "#e29334", "Decision + Baseline + exactly 3 Branches", [
 arrow(350, 220, 470, 270, "#3b82f6"); arrow(637, 220, 637, 270, "#22a06b"); arrow(960, 220, 850, 270, "#e29334");
 lane(451, "SCENARIO DESIGN", "Optional model call");
 box(220, 425, 395, 145, "#8b5cf6", "Gemini server route", ["Official @google/genai SDK · key stays server-side", "Verified free-model allowlist · unbilled project", "Daily / per-run budgets · bounded retries", "20s timeout · output cap · SHA-256 cache"], true);
-box(685, 425, 440, 145, "#22a06b", "Review candidate assumptions", ["3 distinct pathways · 3–5 adjustable inputs each", "Inferred labels · explanations · risks · experiments", "Explicit review before applying candidates", "User-edited numbers preserved on regeneration"]);
+box(685, 425, 440, 145, "#22a06b", "Review candidate assumptions", ["3 distinct pathways · 3 to 5 adjustable inputs each", "Inferred labels · explanations · risks · experiments", "Explicit review before applying candidates", "User-edited numbers preserved on regeneration"]);
 arrow(500, 380, 415, 425, "#8b5cf6", true); arrow(615, 495, 685, 495, "#8b5cf6");
 body += '<path d="M1030 325 L1150 325 L1150 605 L905 605 L905 620" fill="none" stroke="#22a06b" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#arrow)"/>';
 text(1140, 400, "No-key path", 11, "#22a06b", 'text-anchor="end"');
