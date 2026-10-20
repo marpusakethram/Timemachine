@@ -11,7 +11,7 @@ export function NumericField({ name, value, meta, onChange }: { name: Field; val
     setText(raw);
     const n = Number(raw);
     if (!raw.trim() || !Number.isFinite(n) || n < f.min || n > f.max || ((f.unit === "month" || name === "customers") && !Number.isInteger(n))) {
-      setError(`Enter ${f.min.toLocaleString()}–${f.max.toLocaleString()}${f.unit === "month" || name === "customers" ? " (whole numbers)" : ""}.`);
+      setError(`Enter ${f.min.toLocaleString()} to ${f.max.toLocaleString()}${f.unit === "month" || name === "customers" ? " (whole numbers)" : ""}.`);
       return;
     }
     setError(""); onChange(n);
