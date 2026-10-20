@@ -8,7 +8,7 @@ test("record the slider transformation", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/");
   await page.getByRole("button", { name: "Open the fictional SaaS demo" }).click();
-  await page.getByRole("button", { name: "03 Raise $200k", exact: true }).click();
+  await page.getByRole("button", { name: "C Raise $200k", exact: true }).click();
   await expect(page.locator(".comparison-card.selected")).toContainText("83.3%");
   // Delays are intentional recording beats, not application synchronization.
   await page.waitForTimeout(2500);
@@ -17,7 +17,7 @@ test("record the slider transformation", async ({ browser }) => {
   for (let i = 0; i < 20; i++) { await slider.press("ArrowRight"); await page.waitForTimeout(160); }
   await expect(page.locator(".comparison-card.selected")).toContainText("71.4%");
   await page.waitForTimeout(2500);
-  await page.getByRole("button", { name: "01 Bootstrap conservatively", exact: true }).click();
+  await page.getByRole("button", { name: "A Bootstrap conservatively", exact: true }).click();
   await page.waitForTimeout(2500);
   await context.close();
   await fs.mkdir("docs/media", { recursive: true });

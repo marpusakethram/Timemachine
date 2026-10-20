@@ -1,14 +1,22 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Clock3, FileUp, FlaskConical, GitBranch, Trash2, SlidersHorizontal, ScanLine, ShieldCheck } from "lucide-react";
+import { EyeOff, FileUp, Lock, Sparkles, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { Brand } from "./brand";
 import { sampleDecision } from "@/lib/sample";
 import { Decision, metadata } from "@/lib/simulation/models";
 import { listScenarios, removeScenario, saveScenario } from "@/lib/storage/scenario-store";
 import { decodeShare, importScenario, MAX_IMPORT_BYTES } from "@/lib/export/share";
 import { DecisionPreview } from "./decision-preview";
+
+// Real screenshots of the app, captured by tests/e2e/screens.spec.ts.
+function Shot({ src, alt, width, height, className = "", eager = false }: { src: string; alt: string; width: number; height: number; className?: string; eager?: boolean }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className={`shot ${className}`} src={src} alt={alt} width={width} height={height} loading={eager ? "eager" : "lazy"} decoding="async" />;
+}
+
 export function DecisionInput() {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -18,6 +26,8 @@ export function DecisionInput() {
   const file = useRef<HTMLInputElement>(null);
   useEffect(() => {
     try {
+      // localStorage only exists after hydration, so the first read has to happen here.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSaved(listScenarios());
       if (location.hash.startsWith("#scenario=")) {
         const imported = decodeShare(location.hash);
@@ -27,7 +37,7 @@ export function DecisionInput() {
         history.replaceState(null, "", "/");
         router.push(`/scenario/${imported.id}`);
       }
-    } catch { setError("Could not read local data or share link. Your saved data was not changed. Import a valid JSON backup."); }
+    } catch { setError("That share link or your saved data couldn't be read, so nothing was changed. Import a JSON backup instead."); }
   }, [router]);
   function create(sample: boolean) {
     try {
@@ -38,49 +48,90 @@ export function DecisionInput() {
       }
       saveScenario(Decision.parse(decision));
       router.push(`/scenario/${decision.id}`);
-    } catch { setError("Enter a title and dilemma within the limits, and allow browser storage to save your scenario."); }
+    } catch { setError("Add a name and a short description, then try again. If it still fails, this browser may be blocking local storage."); }
   }
-  return <main className="landing">
-    <header className="topbar"><Link href="/" className="brand"><span className="brand-icon"><Clock3 size={21} /></span>time<span>machine</span><sup>LAB</sup></Link><nav className="landing-nav" aria-label="Page sections"><a href="#model">The model</a><a href="#workbench">Your decisions</a></nav><span className="pill"><span className="status-dot" />Local-first · no account</span><a className="nav-link" href="https://github.com/marpusakethram/Timemachine">Source <ArrowUpRight size={14} /></a></header>
-    <div className="hero-grid">
-      <section className="hero-copy"><span className="eyebrow"><span className="tiny-line" /> A DECISION LAB FOR FOUNDERS</span><h1>Don’t ask<br />what happens.<br /><span>Move the<br /><em>assumptions.</em></span></h1><p className="hero-description">The next move is yours.<br />See what it could mean for your cash, your runway, and the company you keep.</p>
-        <div className="hero-ctas"><Button onClick={() => create(true)}>Open the fictional SaaS demo <ArrowUpRight size={16} /></Button><a href="#new-decision" className="text-action">Frame your decision <ArrowRight size={15} /></a></div>
-        <div className="hero-footnote"><FlaskConical size={16} /><span>Hypothetical by design. Useful by making it explicit.</span></div>
+  return <div className="site">
+    <header className="site-header"><div className="wrap site-header-inner">
+      <Brand />
+      <nav className="site-nav" aria-label="Page sections"><a href="#inside">Inside the app</a><a href="#new-decision">New decision</a><a href="#workbench">Your decisions</a><a href="https://github.com/marpusakethram/Timemachine">GitHub</a></nav>
+      <Button size="sm" onClick={() => create(true)}>Try the demo</Button>
+    </div></header>
+    <main>
+      <section className="hero">
+        <div className="wrap hero-copy">
+          <h1>Hire, raise or stay lean. See the next 24 months first.</h1>
+          <p className="lead">Time Machine models cash, runway and ownership for three paths at once. Change a number and every chart redraws on the spot. It runs in your browser, so your numbers stay with you.</p>
+          <div className="hero-actions"><Button size="lg" onClick={() => create(true)}>Open the fictional SaaS demo</Button><a href="#new-decision" className="button button-outline button-lg">Start your own decision</a></div>
+        </div>
+        <div className="wrap">
+          <div className="hero-stage">
+            <Shot className="hero-shot" src="/screens/workspace.jpg" alt="The Time Machine workspace comparing three paths for a fictional SaaS company" width={2880} height={1720} eager />
+            <DecisionPreview />
+          </div>
+        </div>
       </section>
-      <DecisionPreview />
-    </div>
-    <section className="model-principles" id="model" aria-label="How the model works">
-      <div><GitBranch size={19} /><span><strong>Explore three paths</strong><small>Keep the trade-offs side by side.</small></span></div>
-      <div><SlidersHorizontal size={19} /><span><strong>Move what you control</strong><small>Every number is an editable assumption.</small></span></div>
-      <div><ScanLine size={19} /><span><strong>See the calculation</strong><small>Transparent math, no invented certainty.</small></span></div>
-    </section>
-    <section className="creation-section" id="new-decision">
-      <div className="creation-copy"><span className="eyebrow">FROM “WHAT IF” TO “WHAT IT TAKES”</span><h2>A little more clarity.<br /><em>Before the commitment.</em></h2><p>Hiring changes your burn. Raising changes your ownership. Growth changes the runway. Put those assumptions on the same page.</p><div className="model-note"><ShieldCheck size={19} /><div><strong>Your decisions stay yours.</strong><p>Saved in this browser. No account, no bank connection, no API key required.</p></div></div><span className="small muted">Conditional models. Not forecasts or financial advice.</span></div>
-      <section className="decision-card"><div className="card-top"><span className="eyebrow">01 / FRAME THE DECISION</span><GitBranch size={20} /></div><h2>What’s your next move?</h2><p className="muted">Start with a dilemma. Explore what would need to be true.</p>
-        <form onSubmit={e => { e.preventDefault(); create(false); }}>
-          <label htmlFor="title">Give it a name</label><input id="title" placeholder="Bootstrap or raise our first round?" value={title} onChange={e => setTitle(e.target.value)} maxLength={120} required />
-          <label htmlFor="description">The dilemma <span>{description.length}/1500</span></label><textarea id="description" placeholder="We have a promising product and a small team. Should we stay lean, hire, or raise capital to buy more time?" value={description} onChange={e => setDescription(e.target.value)} maxLength={1500} required rows={4} />
-          <div className="template-choice"><span>STARTER MODEL</span><strong>Bootstrap vs Raise</strong><small>Includes a hiring branch · 24 months</small></div>
-          <Button type="submit" className="wide">Preview my decision <ArrowRight size={17} /></Button>
-        </form>
-        <p className="small muted centered">Starts with sample numbers. Make them yours in the workspace.</p>
-      </section>
-    </section>
-    {error && <p className="notice error" role="alert">{error}</p>}
-    <section className="landing-bottom" id="workbench"><div><span className="eyebrow">THE WORKBENCH</span><h2>Your decisions, kept here.</h2><p className="muted">Stored in this browser. Export a backup to take them with you.</p></div><Button variant="outline" onClick={() => file.current?.click()}><FileUp size={16} />Import JSON</Button><input ref={file} hidden type="file" accept=".json,application/json" onChange={async e => {
-      try {
-        const f = e.target.files?.[0]; if (!f) return;
-        if (f.size > MAX_IMPORT_BYTES) throw new Error("File too large.");
-        const d = importScenario(await f.text()); d.id = crypto.randomUUID(); d.updatedAt = metadata("entered", "").lastEdited;
-        saveScenario(d); router.push(`/scenario/${d.id}`);
-      } catch { setError("Invalid or oversized JSON. Import a Time Machine v1 export (maximum 100 KB). Nothing was overwritten."); }
-      e.target.value = "";
-    }} /></section>
-    {!saved.length && <div className="empty-workbench"><GitBranch size={22} /><p>Room for your next decision.</p><a href="#new-decision">Start with a dilemma <ArrowRight size={14} /></a></div>}
-    <div className="saved-grid">{saved.map(s => <article key={s.id} className="saved-card"><Link href={`/scenario/${s.id}`}><span className="eyebrow">SAVED SCENARIO</span><h3>{s.title}</h3><p>{new Date(s.updatedAt).toLocaleDateString()} <ArrowUpRight size={15} /></p></Link><Button variant="ghost" aria-label={`Delete ${s.title}`} onClick={() => {
-      if (!confirm("Delete this local scenario? Export a backup first if you need it.")) return;
-      try { removeScenario(s.id); setSaved(listScenarios()); } catch { setError("Could not remove the scenario from browser storage."); }
-    }}><Trash2 size={16} /></Button></article>)}</div>
-    <footer><span>TIME MACHINE / MODEL THE TRADE-OFF</span><span>No bank connections. No market feeds. Your numbers.</span></footer>
-  </main>;
+
+      <section className="block" id="inside"><div className="wrap">
+        <div className="block-head"><h2>Everything you need to make the call, on one screen.</h2><p>These are real screenshots. Our test suite opens the app, clicks through the demo and captures them, so what you see is what you get.</p></div>
+        <div className="mosaic">
+          <article className="tile tile-wide"><div className="tile-copy"><h3>Three paths, side by side</h3><p>Runway, cash at month 24, funding gap and founder ownership for every option. Pick one and the whole workspace follows it.</p></div><Shot src="/screens/compare.jpg" alt="Comparison cards for the bootstrap, hire and raise paths" width={1544} height={856} /></article>
+          <article className="tile tile-tall"><div className="tile-copy"><h3>Works on your phone</h3><p>Check the numbers before the meeting, not after.</p></div><Shot className="shot-phone" src="/screens/mobile.jpg" alt="The workspace on a phone sized screen" width={780} height={1560} /></article>
+          <article className="tile"><div className="tile-copy"><h3>Every number is yours to change</h3><p>Each input shows its unit, its limits and where it came from.</p></div><Shot src="/screens/assumptions.jpg" alt="The assumptions panel with growth, expenses and capital inputs" width={580} height={1616} /></article>
+          <article className="tile"><div className="tile-copy"><h3>Stress test the plan</h3><p>See how runway moves when growth slips or spending climbs.</p></div><Shot src="/screens/sensitivity.jpg" alt="A grid of runway months for different growth and spending levels" width={1544} height={1280} /></article>
+        </div>
+      </div></section>
+
+      <section className="block block-mist" id="new-decision"><div className="wrap create-grid">
+        <div className="create-copy">
+          <h2>Start with your own question.</h2>
+          <p>Give it a name and describe the choice in a sentence or two. You get the bootstrap, hire and raise template with sample numbers, ready for you to make them yours.</p>
+          <ul className="plain-list">
+            <li><Lock size={16} /><span>Saved in this browser only. No signup, no bank login, no API key.</span></li>
+            <li><EyeOff size={16} /><span>Nothing leaves your device unless you export it or share a link.</span></li>
+            <li><Sparkles size={16} /><span>AI suggestions are off until you turn them on and review them.</span></li>
+          </ul>
+          <p className="small">These are &ldquo;what if&rdquo; models, not forecasts or financial advice.</p>
+        </div>
+        <div className="panel create-panel">
+          <form onSubmit={e => { e.preventDefault(); create(false); }}>
+            <label className="field" htmlFor="title"><span>Give it a name</span></label><input id="title" placeholder="Bootstrap or raise our first round?" value={title} onChange={e => setTitle(e.target.value)} maxLength={120} required />
+            <label className="field" htmlFor="description"><span>The dilemma</span><span className="counter">{description.length}/1500</span></label><textarea id="description" placeholder="We have a promising product and a small team. Should we stay lean, hire, or raise to buy more time?" value={description} onChange={e => setDescription(e.target.value)} maxLength={1500} required rows={4} />
+            <div className="template-note"><span className="template-mark" aria-hidden="true"><i className="key key-sky" /><i className="key key-marigold" /><i className="key key-mint" /></span><span><strong>Bootstrap, hire or raise</strong> Three paths over 24 months</span></div>
+            <Button type="submit" size="lg" className="wide">Preview my decision</Button>
+          </form>
+        </div>
+      </div></section>
+
+      <section className="block" id="workbench"><div className="wrap">
+        {error && <p className="notice notice-error" role="alert">{error}</p>}
+        <div className="block-head block-head-row"><div><h2>Your decisions</h2><p>Saved in this browser. Export a backup from any decision to keep a copy.</p></div><Button variant="outline" onClick={() => file.current?.click()}><FileUp size={16} />Import JSON</Button></div>
+        <input ref={file} hidden type="file" accept=".json,application/json" onChange={async e => {
+          try {
+            const f = e.target.files?.[0]; if (!f) return;
+            if (f.size > MAX_IMPORT_BYTES) throw new Error("File too large.");
+            const d = importScenario(await f.text()); d.id = crypto.randomUUID(); d.updatedAt = metadata("entered", "").lastEdited;
+            saveScenario(d); router.push(`/scenario/${d.id}`);
+          } catch { setError("Invalid or oversized JSON. Import a Time Machine v1 export of 100 KB or less. Nothing was overwritten."); }
+          e.target.value = "";
+        }} />
+        <div className="panel table-panel">
+          {!saved.length ? <div className="empty-state"><p><strong>Nothing saved yet.</strong> Open the demo or start your own decision and it will show up here.</p><a href="#new-decision" className="button button-outline">Start a decision</a></div>
+            : <div className="table-scroll"><table className="data-table"><thead><tr><th scope="col">Decision</th><th scope="col">Paths</th><th scope="col">Last edited</th><th scope="col"><span className="sr-only">Actions</span></th></tr></thead><tbody>{saved.map(s => <tr key={s.id}>
+              <td><Link href={`/scenario/${s.id}`} className="row-link">{s.title}</Link></td>
+              <td className="muted-cell">{s.branches.map(b => b.name).join(", ")}</td>
+              <td className="muted-cell">{new Date(s.updatedAt).toLocaleDateString()}</td>
+              <td className="row-actions"><Link href={`/scenario/${s.id}`} className="button button-ghost button-sm">Open</Link><Button variant="ghost" size="sm" aria-label={`Delete ${s.title}`} onClick={() => {
+                if (!confirm("Delete this local scenario? Export a backup first if you need it.")) return;
+                try { removeScenario(s.id); setSaved(listScenarios()); } catch { setError("Could not remove the scenario from browser storage."); }
+              }}><Trash2 size={15} /></Button></td>
+            </tr>)}</tbody></table></div>}
+        </div>
+      </div></section>
+    </main>
+    <footer className="site-footer"><div className="wrap site-footer-inner">
+      <Brand />
+      <p>Model the trade-off before you commit. No bank connections, no market feeds, just your numbers.</p>
+      <nav aria-label="Footer"><a href="https://github.com/marpusakethram/Timemachine">Source code</a><a href="https://github.com/marpusakethram/Timemachine/blob/main/LICENSE">MIT license</a></nav>
+    </div></footer>
+  </div>;
 }

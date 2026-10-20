@@ -1,41 +1,64 @@
-# Verification — 20 October 2026
+# Verification, 20 October 2026
 
-Tested locally on Windows with Node.js 22.22.2, npm 10.9.7, Next.js 16.4.2
-and Playwright Chromium. No API key was configured and no live model call was made.
+Run on Linux with Node.js 22.22, npm 10.9, Next.js 16.4.2, Playwright 1.64.1 and Chromium,
+after the Meta style redesign. No API key was set and no live model was called.
 
-| Gate | Result |
-|---|---|
-| TypeScript | `npm run typecheck` passed |
-| Deterministic engine / boundaries / connector | `npm test`: 41 tests passed across 4 files |
-| Production build | `npm run build` passed; all app and API routes compiled |
-| Browser workflows | `npm run test:e2e`: 4 tests passed against production on port 3001 |
-| Dependencies | npm audit reported 0 vulnerabilities after upgrading Vitest |
-| Licenses | 177 installed package manifests inspected; 0 missing declarations |
-| Visual review | Desktop home, desktop workspace, mobile workspace and architecture PNG inspected |
+| Check | Command | Result |
+|---|---|---|
+| TypeScript | `npm run typecheck` | Passed |
+| Lint | `npm run lint` | Passed, 0 errors, 0 warnings |
+| Unit and integration | `npm test` | 41 tests passed across 4 files |
+| Production build | `npm run build` | Passed, all app and API routes compiled |
+| Browser workflows | `npm run test:e2e` | 4 passed: 3 workflow tests and the screenshot capture |
+| Demo recording | `tests/e2e/demo.spec.ts` | Passed in GitHub Actions. Locally, every step passed but the video couldn't be saved (see below) |
+| Licenses | `node scripts/audit-licenses.mjs` | 493 packages, 0 missing licenses |
+| npm audit | `npm audit` | 5 high, all one issue: `braces` inside `eslint-config-next` (see below) |
+| Visual check | | Desktop home, desktop workspace and mobile workspace screenshots reviewed |
 
-Browser checks cover the home-page live capital slider, create and import, branch
-selection, immediate ownership changes, saved reload, JSON contents, CSV row count,
-PNG signature, clipboard share round trip, reset to baseline, no-key error,
-mobile overflow and inferred-candidate review. A separate test records the
-slider transformation using the real application.
+## What the browser tests cover
 
-Integration tests exercise the official SDK interface through labeled mocks:
-structured JSON configuration, durable cache, one corrective retry, bounded 429
-retry, input/consent checks, normalized localhost origin handling, persistent
-request caps and concurrent budget access. These are not live provider results.
+The live capital slider on the home page, creating a decision, a bad JSON import, importing
+the sample fixture, picking path C, ownership going from 83.3% to 71.4%, save and reload,
+JSON contents, CSV row count, the PNG file signature, a full share link round trip through
+the clipboard, reset to baseline, the "Gemini is not configured" error, no sideways scrolling
+at 390px, and the AI review step using a labeled test fixture.
 
-The engine's hand-calculated sample outputs are checked against
-`fixtures/golden.json`. Tests cover zero revenue/burn, negative growth,
-zero starting cash, financing at months 1 and 24, 0/100% gross margin,
-100% churn, capex, hiring, dilution, missing valuation, supported outliers,
-baseline inheritance, sensitivity and deterministic fingerprints.
+`tests/e2e/screens.spec.ts` drives the real app and saves the marketing screenshots in
+`public/screens`. The home, workspace and mobile shots in `docs/screenshots` come from
+`tests/e2e/workflow.spec.ts`.
 
-The first browser runs identified test selector/compilation timing issues and a
-real localhost-origin mismatch in the API route. Those were corrected before the
-passing production run. The final browser suite uses its own port so the live
-preview can remain running.
+## The demo video
 
-Not verified: live Gemini output or real free-tier account eligibility, other browser
-engines, multi-host public deployments, or real-world business outcomes. Optional
-Sharp/libvips packages have LGPL obligations if their binaries are redistributed;
-this source repository does not bundle those binaries.
+In this sandbox, the installed Chromium build doesn't match Playwright 1.64, so Playwright's
+video recorder never writes a file. The demo test still runs every step and passes every
+assertion, then fails at `video.saveAs`. The videos in `docs/media` were made by running the
+same steps against the real app, saving a frame after each step, and joining them with
+FFmpeg. Nothing is mocked. In GitHub Actions, which installs a matching browser, the
+`verify` job ran the full browser suite including this test and passed on commit `6b81b49`.
+
+## The npm audit finding
+
+`braces` (pulled in by `eslint-config-next` through `fast-glob` and `micromatch`) is flagged
+for a stack exhaustion bug with deeply nested patterns. It only runs at lint time on our own
+config globs and never ships to users. No patched `braces` release exists yet, and npm's
+`--force` fix downgrades to the Next 14 lint config, which doesn't fit Next 16. Left as is
+and tracked in `TODO.md`.
+
+## Integration tests
+
+These hit the official SDK interface through labeled mocks: structured JSON config, the disk
+cache, one fix-up retry, a limited 429 retry, input and consent checks, localhost origin
+handling, request caps that survive restarts, and budget access from several processes at
+once. These are not live provider results.
+
+The engine's hand calculated outputs are checked against `fixtures/golden.json`. Tests cover
+zero revenue and burn, negative growth, zero starting cash, funding in months 1 and 24, 0 and
+100% gross margin, 100% churn, capex, hiring, dilution, missing valuation, outliers, baseline
+inheritance, sensitivity and repeatable fingerprints.
+
+## Not verified
+
+- Live Gemini output, or whether any real model is on the free tier right now.
+- Browsers other than Chromium.
+- Public, multi-host deployments.
+- Any real business outcome.

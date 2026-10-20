@@ -19,6 +19,6 @@ export function sampleDecision(): Decision {
     description: "Our fictional SaaS has $50k in cash and $4k MRR. Should we keep bootstrapping, hire two engineers, or raise $200k?",
     baseline: { values: { ...defaults }, metadata: baselineMetadata("sample"), currency: "USD" },
     branches: templateBranches(), schema_version: 1, engine_version: ENGINE_VERSION, createdAt: at, updatedAt: at,
-    sources: [{ label: "Fictional SaaS demo — illustrative assumptions, not empirical data", kind: "sample" }],
+    sources: [{ label: "Fictional SaaS demo. Illustrative assumptions, not empirical data", kind: "sample" }],
   });
 }

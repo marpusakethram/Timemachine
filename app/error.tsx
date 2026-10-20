@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 export default function ErrorPage({ reset }: { reset: () => void }) {
-  return <main className="loading"><h1>The workspace could not render.</h1><p>Your saved browser data has not been deleted.</p><button onClick={reset}>Try again</button><a href="/">Return to workbench</a></main>;
+  return <main className="state-page"><span className="badge">Something broke</span><h1>The workspace could not load.</h1><p>Your saved browser data is still there. Nothing was deleted.</p><div className="state-actions"><button className="button button-primary" onClick={reset}>Try again</button><Link className="button button-outline" href="/">Back to your decisions</Link></div></main>;
 }

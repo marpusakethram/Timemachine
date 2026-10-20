@@ -4,20 +4,22 @@ test("offline demo: branch, slider, save, reload, exports, no-key, screenshot", 
   const errors: string[] = [];
   page.on("pageerror", e => errors.push(e.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Move the");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("See the next 24 months");
   await page.getByRole("slider", { name: "Demo capital slider" }).fill("400000");
   await expect(page.getByTestId("preview-ownership")).toContainText("71.4");
   await page.getByRole("slider", { name: "Demo capital slider" }).fill("200000");
+  // Lazy images below the fold only load on scroll, so load them all before the full-page shot.
+  await page.locator("img.shot").evaluateAll(imgs => Promise.all(imgs.map(img => { (img as HTMLImageElement).loading = "eager"; return (img as HTMLImageElement).decode().catch(() => undefined); })));
   await page.screenshot({ path: "docs/screenshots/home.png", fullPage: true });
   await page.getByRole("button", { name: "Open the fictional SaaS demo" }).click();
   await expect(page).toHaveURL(/scenario/);
-  await page.getByRole("button", { name: "03 Raise $200k", exact: true }).click();
+  await page.getByRole("button", { name: "C Raise $200k", exact: true }).click();
   await expect(page.locator(".comparison-card.selected")).toContainText("83.3%");
   await page.getByLabel("Capital raised", { exact: true }).fill("400000");
   await expect(page.locator(".comparison-card.selected")).toContainText("71.4%");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.reload();
-  await page.getByRole("button", { name: "03 Raise $200k", exact: true }).click();
+  await page.getByRole("button", { name: "C Raise $200k", exact: true }).click();
   await expect(page.getByLabel("Capital raised", { exact: true })).toHaveValue("400000");
   const csvDownload = page.waitForEvent("download");
   await page.getByRole("button", { name: "CSV", exact: true }).click();
@@ -47,10 +49,10 @@ test("offline demo: branch, slider, save, reload, exports, no-key, screenshot", 
   expect(shared).toContain("#scenario=");
   await page.goto(shared);
   await expect(page).toHaveURL(/scenario/);
-  await page.getByRole("button", { name: "03 Raise $200k", exact: true }).click();
+  await page.getByRole("button", { name: "C Raise $200k", exact: true }).click();
   await expect(page.getByLabel("Capital raised", { exact: true })).toHaveValue("400000");
   page.once("dialog", d => d.accept());
-  await page.getByRole("button", { name: "Reset branch to baseline" }).click();
+  await page.getByRole("button", { name: "Reset path to baseline" }).click();
   await expect(page.getByLabel("Capital raised", { exact: true })).toHaveValue("0");
   expect(errors).toEqual([]);
 });
@@ -66,7 +68,7 @@ test("create, validate and import with a mobile keyboard-friendly layout", async
   await expect(page.getByText("Enter -50–50.")).toBeVisible();
   await page.getByLabel("Monthly growth", { exact: true }).fill("7");
   await page.getByRole("button", { name: "Save", exact: true }).click();
-  await page.getByRole("link", { name: "Workbench", exact: true }).click();
+  await page.getByRole("link", { name: "Your decisions", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles({ name: "bad.json", mimeType: "application/json", buffer: Buffer.from("{broken") });
   await expect(page.locator('main [role="alert"]')).toContainText("Invalid");
   await page.locator('input[type="file"]').setInputFiles("fixtures/sample-saas.json");
