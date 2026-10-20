@@ -17,8 +17,10 @@ const content = `# Dependency license inventory
 Generated from installed package manifests and the committed lockfile using
 \`node scripts/audit-licenses.mjs\`. This inventory covers the local installation,
 including development tools. Platform-specific optional packages may differ on other
-machines and retain their upstream licenses. No third-party photos, videos or fonts
-are bundled. Lucide icons are ISC; the shadcn-derived button pattern is MIT.
+machines and retain their upstream licenses. No third-party photos or videos are
+bundled. The Schibsted Grotesk and IBM Plex Sans fonts are self-hosted through
+Fontsource and use the SIL Open Font License 1.1. Lucide icons are ISC; the
+shadcn-derived button pattern is MIT.
 
 Our MIT license applies only to our own source and original diagram. Dependencies
 remain under their listed licenses; retain their notices when redistributing.

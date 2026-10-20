@@ -1,38 +1,50 @@
-# Model assumptions and conventions
+# Model assumptions
 
-All sample numbers are fictional. “Inferred” means proposed by AI and unverified.
-“Entered” means edited by the user, not objectively correct. “Sample” means template.
-User review does not turn inferred values into evidence.
+All sample numbers are made up. Each number has a source label:
 
-1. The baseline revenue is month zero. Growth and then churn apply to month one.
-   The net multiplier is `(1 + growth / 100) * (1 - churn / 100)`, not growth minus churn.
-2. Revenue is collected in its recognition month. COGS is revenue times one minus margin.
-   Recurring operating expenses exclude COGS. Gross profit is not cash or ARR.
-3. Financing arrives at the beginning of a numbered month; operating cash flows and
-   capex are combined in the month-end snapshot. Intramonth cash timing is not modeled.
-4. Hiring adds recurring OpEx from its start month through month 24. No automatic
-   efficiency benefit or revenue uplift follows from hiring; any growth override is separate.
-5. Capex is a single cash outflow. No depreciation or tax effects are modeled.
-6. Starting zero cash is recorded as a month-zero shortfall. Later recovery does not
-   change the earliest shortfall. A positive balance throughout 24 months is labeled
-   “Beyond 24 mo,” never infinite.
-7. The funding gap is additional month-zero cash that keeps all balances strictly
-   positive. For a zero or negative minimum balance it is
-   `ceil(-minimumCash * 100 + 1) / 100`, otherwise zero.
-8. A single priced round uses investment/(pre-money+investment) for new investor
-   ownership. Founders' existing fraction is multiplied by pre-money/post-money.
-   A zero pre-money input means “unknown,” not a zero-price round, so dilution is hidden.
-9. Customers use the same net factor as revenue and are rounded only for display.
-   Revenue per customer, seats and cohort retention are not modeled.
-10. Currency uses USD, EUR, GBP or INR labels; changing labels does not convert amounts.
-11. Computations use finite IEEE-754 doubles; imports and input values are bounded.
-    Full precision is retained internally and in CSV. This is a scenario tool, not an
-    accounting ledger or settlement system.
-12. Sensitivity varies gross monthly growth 0–12% at fixed steps, and expenses at
-    0.5/0.75/1/1.25/1.5 times the selected expenses (a 1,000 base if selected expenses
-    are below 1,000). Values are labeled in actual currency units and capped at schema bounds.
+- **Sample** means it came from the template.
+- **Entered** means you typed it. That doesn't make it correct.
+- **Inferred** means an AI suggested it and nobody has verified it. Reviewing it
+  doesn't turn it into evidence.
 
-Hand-calculated seed checks: 4,000 × 1.05 × 0.98 = 4,116; gross profit = 3,292.80;
-month-one cash = 50,000 + 3,292.80 − 7,000 = 46,292.80.
-Month-two revenue = 4,235.364 and cash = 42,681.0912.
-See `fixtures/golden.json` and unit tests.
+Here's how the model works:
+
+1. The baseline revenue is month zero. Growth applies in month one, then churn.
+   The combined multiplier is `(1 + growth / 100) * (1 - churn / 100)`. It's not
+   growth minus churn.
+2. Revenue is collected in the month it's earned. COGS is revenue times (1 - margin).
+   Operating expenses don't include COGS. Gross profit isn't cash and isn't ARR.
+3. Funding arrives at the start of its month. Operating cash flow and one-time spend
+   are combined in the end-of-month number. Cash timing inside a month isn't modeled.
+4. Hiring adds a monthly cost from its start month through month 24. Hiring doesn't
+   automatically boost revenue or efficiency. If a path grows faster, that's a
+   separate growth setting.
+5. One-time spend (capex) is a single cash hit. No depreciation or taxes.
+6. Starting with zero cash counts as running out in month zero. Recovering later
+   doesn't change when you first ran out. If cash stays positive for all 24 months,
+   runway shows as "Beyond 24 mo". It never says infinite.
+7. The funding gap is the extra day-one cash that keeps every month above zero.
+   If the lowest balance is zero or below, it's `ceil(-minimumCash * 100 + 1) / 100`.
+   Otherwise it's zero.
+8. A priced round gives new investors `investment / (pre-money + investment)`.
+   Founders keep their old share times `pre-money / post-money`. A pre-money of zero
+   means "unknown", not a free round, so dilution is hidden.
+9. Customers grow and shrink by the same factor as revenue and are only rounded for
+   display. Revenue per customer, seats and cohorts aren't modeled.
+10. Currency can be USD, EUR, GBP or INR. Switching just changes the label. Nothing
+    gets converted.
+11. Math uses normal floating point numbers, and inputs and imports have limits.
+    Full precision is kept inside the app and in the CSV. This is a planning tool,
+    not accounting software.
+12. The sensitivity lab steps monthly growth from 0 to 12%, and expenses at 0.5x,
+    0.75x, 1x, 1.25x and 1.5x of the selected path's expenses (using a 1,000 base if
+    expenses are under 1,000). Values use real currency units and stay within limits.
+
+A hand check you can do yourself:
+
+- Month one revenue: 4,000 × 1.05 × 0.98 = 4,116
+- Gross profit: 3,292.80
+- Month one cash: 50,000 + 3,292.80 - 7,000 = 46,292.80
+- Month two revenue: 4,235.364, cash: 42,681.0912
+
+These match `fixtures/golden.json` and the unit tests.

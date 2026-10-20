@@ -3,8 +3,10 @@
 Generated from installed package manifests and the committed lockfile using
 `node scripts/audit-licenses.mjs`. This inventory covers the local installation,
 including development tools. Platform-specific optional packages may differ on other
-machines and retain their upstream licenses. No third-party photos, videos or fonts
-are bundled. Lucide icons are ISC; the shadcn-derived button pattern is MIT.
+machines and retain their upstream licenses. No third-party photos or videos are
+bundled. The Schibsted Grotesk and IBM Plex Sans fonts are self-hosted through
+Fontsource and use the SIL Open Font License 1.1. Lucide icons are ISC; the
+shadcn-derived button pattern is MIT.
 
 Our MIT license applies only to our own source and original diagram. Dependencies
 remain under their listed licenses; retain their notices when redistributing.
@@ -13,23 +15,29 @@ This repository distributes our source, not those binaries; npm installs the
 upstream packages with their notices. Binary redistributions must preserve
 upstream LGPL obligations and corresponding-source availability.
 
-Installed packages: 177. Missing license declarations: 0.
+Installed packages: 187. Missing license declarations: 0.
 
 | Package | Version | License | Scope |
 |---|---|---|---|
 | @alloc/quick-lru | 5.3.0 | MIT | development |
 | @emnapi/runtime | 1.11.3 | MIT | runtime / transitive |
+| @fontsource-variable/schibsted-grotesk | 5.3.0 | OFL-1.1 | runtime / transitive |
+| @fontsource/ibm-plex-sans | 5.3.0 | OFL-1.1 | runtime / transitive |
 | @google/genai | 1.52.0 | Apache-2.0 | runtime / transitive |
 | @img/colour | 1.1.0 | MIT | runtime / transitive |
+| @img/sharp-libvips-linux-x64 | 1.3.4 | LGPL-3.0-or-later | runtime / transitive |
+| @img/sharp-libvips-linuxmusl-x64 | 1.3.4 | LGPL-3.0-or-later | runtime / transitive |
+| @img/sharp-linux-x64 | 0.35.5 | Apache-2.0 | runtime / transitive |
+| @img/sharp-linuxmusl-x64 | 0.35.5 | Apache-2.0 | runtime / transitive |
 | @img/sharp-wasm32 | 0.35.5 | Apache-2.0 AND LGPL-3.0-or-later AND MIT | runtime / transitive |
-| @img/sharp-win32-x64 | 0.35.5 | Apache-2.0 AND LGPL-3.0-or-later | runtime / transitive |
 | @jridgewell/gen-mapping | 0.3.13 | MIT | development |
 | @jridgewell/remapping | 2.3.5 | MIT | development |
 | @jridgewell/resolve-uri | 3.1.2 | MIT | development |
 | @jridgewell/sourcemap-codec | 1.6.0 | MIT | development |
 | @jridgewell/trace-mapping | 0.3.31 | MIT | development |
 | @next/env | 16.4.2 | MIT | runtime / transitive |
-| @next/swc-win32-x64-msvc | 16.4.2 | MIT | runtime / transitive |
+| @next/swc-linux-x64-gnu | 16.4.2 | MIT | runtime / transitive |
+| @next/swc-linux-x64-musl | 16.4.2 | MIT | runtime / transitive |
 | @oxc-project/types | 0.154.0 | MIT | development |
 | @playwright/test | 1.64.1 | Apache-2.0 | runtime / transitive |
 | @protobufjs/aspromise | 1.1.2 | BSD-3-Clause | runtime / transitive |
@@ -44,14 +52,16 @@ Installed packages: 177. Missing license declarations: 0.
 | @radix-ui/react-compose-refs | 1.1.5 | MIT | runtime / transitive |
 | @radix-ui/react-slot | 1.5.0 | MIT | runtime / transitive |
 | @reduxjs/toolkit | 2.13.0 | MIT | runtime / transitive |
-| @rolldown/binding-win32-x64-msvc | 1.2.14 | MIT | development |
+| @rolldown/binding-linux-x64-gnu | 1.2.14 | MIT | development |
+| @rolldown/binding-linux-x64-musl | 1.2.14 | MIT | development |
 | @rolldown/pluginutils | 1.0.1 | MIT | development |
 | @standard-schema/spec | 1.1.0 | MIT | runtime / transitive |
 | @standard-schema/utils | 0.3.0 | MIT | runtime / transitive |
 | @swc/helpers | 0.5.23 | Apache-2.0 | runtime / transitive |
 | @tailwindcss/node | 4.3.3 | MIT | development |
 | @tailwindcss/oxide | 4.3.3 | MIT | development |
-| @tailwindcss/oxide-win32-x64-msvc | 4.3.3 | MIT | development |
+| @tailwindcss/oxide-linux-x64-gnu | 4.3.3 | MIT | development |
+| @tailwindcss/oxide-linux-x64-musl | 4.3.3 | MIT | development |
 | @tailwindcss/postcss | 4.3.3 | MIT | development |
 | @types/chai | 5.2.3 | MIT | development |
 | @types/d3-array | 3.2.2 | MIT | runtime / transitive |
@@ -137,8 +147,10 @@ Installed packages: 177. Missing license declarations: 0.
 | jws | 4.0.1 | MIT | runtime / transitive |
 | lightningcss | 1.32.0 | MPL-2.0 | development |
 | lightningcss | 1.33.0 | MPL-2.0 | development |
-| lightningcss-win32-x64-msvc | 1.32.0 | MPL-2.0 | development |
-| lightningcss-win32-x64-msvc | 1.33.0 | MPL-2.0 | development |
+| lightningcss-linux-x64-gnu | 1.32.0 | MPL-2.0 | development |
+| lightningcss-linux-x64-gnu | 1.33.0 | MPL-2.0 | development |
+| lightningcss-linux-x64-musl | 1.32.0 | MPL-2.0 | development |
+| lightningcss-linux-x64-musl | 1.33.0 | MPL-2.0 | development |
 | long | 5.3.2 | Apache-2.0 | runtime / transitive |
 | lucide-react | 0.468.0 | ISC | runtime / transitive |
 | magic-string | 1.4.3 | MIT | development |
