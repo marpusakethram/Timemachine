@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Time Machine brag</title>
+    <script src="assets/js/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/schibsted.woff2") format("woff2"); font-weight: 400 900; }
+      @font-face { font-family: "IBM Plex Sans"; src: url("assets/fonts/plex-400.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "IBM Plex Sans"; src: url("assets/fonts/plex-600.woff2") format("woff2"); font-weight: 600; }
+      :root {
+        --canvas: #f3f4f1; --surface: #fbfbf9; --surface-2: #eaece7; --ink: #15191f; --ink-2: #47505c;
+        --ink-3: #5c6470; --rule: #d9dcd5; --rule-strong: #b8bdb5; --accent: #2f4bd8; --danger: #b4232f;
+        --p1: #2a9d8a; --p2: #c9822b; --p3: #4d6bff;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--canvas); color: var(--ink); font-family: "IBM Plex Sans", sans-serif; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--canvas); }
+      .clip { position: absolute; inset: 0; }
+      .display { font-family: "Schibsted Grotesk", sans-serif; font-weight: 700; letter-spacing: -0.035em; }
+
+      /* Scene 1: hook */
+      #s1 .wrap { position: absolute; left: 160px; top: 200px; width: 1600px; }
+      #s1-num { display: block; font-size: 380px; line-height: 0.95; }
+      #s1-num small { font-size: 0.42em; color: var(--ink-3); margin-left: 12px; }
+      #s1-a { display: block; font-size: 64px; margin-top: 28px; }
+      #s1-b { display: block; font-size: 64px; color: var(--accent); margin-top: 8px; }
+
+      /* Scene 2: reveal */
+      #s2 .wrap { position: absolute; left: 160px; top: 300px; width: 1600px; }
+      .lockup { display: flex; align-items: center; gap: 28px; }
+      .tm { width: 132px; height: 132px; background: var(--accent); color: #f8f9ff; display: flex; align-items: center; justify-content: center; font-family: "Schibsted Grotesk", sans-serif; font-weight: 800; font-size: 62px; letter-spacing: -0.03em; }
+      .lockup-name { font-size: 96px; }
+      #s2-line { display: block; font-size: 120px; line-height: 1.02; margin-top: 64px; width: 1500px; }
+
+      /* Scene 3: the live model */
+      #s3-cap { position: absolute; left: 120px; top: 150px; width: 620px; font-size: 76px; line-height: 1.04; }
+      #s3-sub { position: absolute; left: 120px; top: 520px; width: 560px; font-size: 30px; color: var(--ink-2); line-height: 1.45; }
+      #panel { position: absolute; left: 820px; top: 110px; width: 980px; height: 860px; background: var(--surface); border: 2px solid var(--rule); border-radius: 18px; padding: 40px 48px; box-shadow: 0 30px 80px -30px rgba(29, 42, 74, 0.28); }
+      .p-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 26px; border-bottom: 2px solid var(--rule); font-size: 24px; color: var(--ink-3); }
+      .tabs { display: flex; border: 2px solid var(--rule); border-radius: 10px; padding: 4px; }
+      .tabs b { font-weight: 400; padding: 6px 18px; border-radius: 6px; font-size: 22px; color: var(--ink-3); }
+      .tabs b.on { background: var(--ink); color: var(--canvas); }
+      .figs { display: flex; justify-content: space-between; align-items: flex-end; padding: 34px 0 10px; }
+      .figs .lbl { display: block; font-size: 24px; color: var(--ink-3); }
+      #own { display: block; font-size: 150px; line-height: 0.95; margin-top: 8px; }
+      #own small { font-size: 0.42em; color: var(--ink-3); margin-left: 6px; }
+      .side { width: 340px; }
+      .side div { border-left: 2px solid var(--rule); padding-left: 26px; margin-top: 18px; }
+      .side strong { display: block; font-size: 34px; font-weight: 600; margin-top: 4px; }
+      #chart { display: block; margin-top: 26px; }
+      .lever { margin-top: 26px; background: var(--surface-2); border-radius: 12px; padding: 26px 30px 22px; }
+      .lever-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 26px; color: var(--ink-2); }
+      .lever-top strong { font-size: 34px; color: var(--ink); font-weight: 600; }
+      .track { position: relative; height: 8px; border-radius: 99px; background: var(--rule-strong); margin: 34px 0 18px; }
+      #fill { position: absolute; left: 0; top: 0; height: 8px; width: 100%; border-radius: 99px; background: var(--accent); transform-origin: left center; }
+      #thumb { position: absolute; top: -15px; left: 0; width: 38px; height: 38px; margin-left: -19px; border-radius: 50%; background: var(--accent); border: 6px solid var(--surface); box-shadow: 0 0 0 2px var(--accent); }
+      .ends { display: flex; justify-content: space-between; font-size: 20px; color: var(--ink-3); }
+      #cursor { position: absolute; left: 0; top: 0; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 4px solid var(--ink); background: rgba(21, 25, 31, 0.08); }
+
+      /* Scene 4: compare */
+      #s4-title { position: absolute; left: 120px; top: 120px; width: 1680px; font-size: 92px; }
+      .cards { position: absolute; left: 120px; top: 330px; width: 1680px; display: flex; gap: 40px; }
+      .card { width: 533px; background: var(--surface); border: 2px solid var(--rule); border-top: 10px solid var(--c); border-radius: 18px; padding: 36px 40px; }
+      .card .path { display: block; font-size: 24px; color: var(--ink-3); }
+      .card h3 { font-size: 36px; font-weight: 600; margin: 12px 0 44px; }
+      .card .run { display: block; font-size: 64px; line-height: 1; white-space: nowrap; }
+      .card .runl { display: block; font-size: 24px; color: var(--ink-3); margin-top: 10px; }
+      .card dl { display: flex; justify-content: space-between; border-top: 2px solid var(--rule); margin-top: 34px; padding-top: 22px; font-size: 28px; }
+      .card dt { color: var(--ink-3); }
+      .card dd { font-weight: 600; }
+      .card.win { border-color: var(--ink); border-top-color: var(--c); }
+
+      /* Scene 5: outro */
+      #s5 .wrap { position: absolute; left: 0; top: 330px; width: 1920px; display: flex; flex-direction: column; align-items: center; }
+      #s5 .tm { width: 168px; height: 168px; font-size: 78px; }
+      #s5-name { display: block; font-size: 110px; margin-top: 36px; }
+      #s5-line { display: block; font-size: 40px; color: var(--ink-2); margin-top: 22px; }
+      #s5-url { display: block; font-size: 32px; color: var(--accent); font-weight: 600; margin-top: 28px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="21">
+      <section id="s1" class="clip" data-start="0" data-duration="3.55" data-track-index="0">
+        <div class="wrap">
+          <span id="s1-num" class="display">100<small>%</small></span>
+          <span id="s1-a" class="display">You own the company.</span>
+          <span id="s1-b" class="display">What does a raise really cost?</span>
+        </div>
+      </section>
+
+      <section id="s2" class="clip" data-start="3.55" data-duration="3.8" data-track-index="0">
+        <div class="wrap">
+          <div id="s2-lock" class="lockup"><div class="tm">TM</div><span class="lockup-name display">Time Machine</span></div>
+          <span id="s2-line" class="display">Don&rsquo;t guess. Move the assumptions.</span>
+        </div>
+      </section>
+
+      <section id="s3" class="clip" data-start="7.35" data-duration="6.29" data-track-index="0">
+        <h2 id="s3-cap" class="display">Drag the capital. Watch your stake move.</h2>
+        <p id="s3-sub">Runway, cash and founder ownership recalculate on every change.</p>
+        <div id="panel">
+          <div class="p-head"><span>Fictional SaaS, USD</span><span class="tabs"><b>Bootstrap</b><b>Hire</b><b class="on">Raise</b></span></div>
+          <div class="figs">
+            <div><span class="lbl">Founder ownership</span><span id="own" class="display"><span id="own-v">83.3</span><small>%</small></span></div>
+            <div class="side">
+              <div><span class="lbl">Modeled runway</span><strong>Beyond 24 mo</strong></div>
+              <div><span class="lbl">Cash at month 24</span><strong id="cash-v">$193,950</strong></div>
+            </div>
+          </div>
+          <svg id="chart" width="884" height="210" viewBox="0 0 884 210">
+            <line x1="0" x2="884" y1="196" y2="196" stroke="#b4232f" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 6" />
+            <path id="base" fill="none" stroke="#5c6470" stroke-width="2.5" stroke-dasharray="8 8" d="" />
+            <path id="line" fill="none" stroke="#2f4bd8" stroke-width="5" stroke-linejoin="round" d="" />
+          </svg>
+          <div class="lever">
+            <div class="lever-top"><span>Capital raised</span><strong id="cap-v">$200,000</strong></div>
+            <div id="track" class="track"><div id="fill"></div><div id="thumb"></div></div>
+            <div class="ends"><span>Keep more of the company</span><span>Buy more runway</span></div>
+          </div>
+        </div>
+        <div id="cursor"></div>
+      </section>
+
+      <section id="s4" class="clip" data-start="13.64" data-duration="4.37" data-track-index="0">
+        <h2 id="s4-title" class="display">Three paths. Side by side.</h2>
+        <div class="cards">
+          <div id="c1" class="card" style="--c: var(--p1)"><span class="path">Path 1</span><h3>Bootstrap conservatively</h3><span class="run display">19 months</span><span class="runl">until cash reaches zero</span><dl><dt>Founder ownership</dt><dd>100.0%</dd></dl></div>
+          <div id="c2" class="card" style="--c: var(--p2)"><span class="path">Path 2</span><h3>Hire two engineers</h3><span class="run display">6 months</span><span class="runl">until cash reaches zero</span><dl><dt>Founder ownership</dt><dd>100.0%</dd></dl></div>
+          <div id="c3" class="card win" style="--c: var(--p3)"><span class="path">Path 3</span><h3>Raise $200k</h3><span class="run display">Beyond 24 mo</span><span class="runl">until cash reaches zero</span><dl><dt>Founder ownership</dt><dd>83.3%</dd></dl></div>
+        </div>
+      </section>
+
+      <section id="s5" class="clip" data-start="18.01" data-duration="2.99" data-track-index="0">
+        <div class="wrap">
+          <div id="s5-tm" class="tm">TM</div>
+          <span id="s5-name" class="display">Time Machine</span>
+          <span id="s5-line">Free, open source, runs in your browser.</span>
+          <span id="s5-url">github.com/marpusakethram/Timemachine</span>
+        </div>
+      </section>
+
+      <audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="21" data-track-index="2" data-volume="0.45"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.6,"v":0.45},{"t":19.6,"v":0.45},{"t":21,"v":0}]}]}'></audio>
+      <audio id="sfx-reveal" src="assets/sfx/reveal.ogg" data-start="3.6" data-duration="0.18" data-track-index="3" data-volume="0.7"></audio>
+      <audio id="sfx-press" src="assets/sfx/click.ogg" data-start="8.9" data-duration="0.06" data-track-index="4" data-volume="0.8"></audio>
+      <audio id="sfx-release" src="assets/sfx/click.ogg" data-start="11.7" data-duration="0.06" data-track-index="4" data-volume="0.8"></audio>
+      <audio id="sfx-card1" src="assets/sfx/card.ogg" data-start="14.2" data-duration="0.6" data-track-index="5" data-volume="0.5"></audio>
+      <audio id="sfx-card2" src="assets/sfx/card.ogg" data-start="15.28" data-duration="0.6" data-track-index="5" data-volume="0.5"></audio>
+      <audio id="sfx-card3" src="assets/sfx/card.ogg" data-start="16.38" data-duration="0.6" data-track-index="5" data-volume="0.5"></audio>
+      <audio id="sfx-logo" src="assets/sfx/logo.ogg" data-start="18.55" data-duration="1.2" data-track-index="6" data-volume="0.45"></audio>
+    </div>
+    <script>
+      // Same math as lib/simulation/engine.ts for the fictional SaaS baseline.
+      function months(capital) {
+        var cash = 50000, rev = 4000, out = [cash];
+        for (var m = 1; m <= 24; m++) {
+          rev = rev * 1.05 * 0.98;
+          cash = cash + rev * 0.8 - 7000 + (m === 1 ? capital : 0);
+          out.push(cash);
+        }
+        return out;
+      }
+      function y(cash) { return 196 - (cash / 450000) * 170; }
+      function pathFor(capital) { return months(capital).map(function (c, i) { return (i ? "L " : "M ") + (i * 884 / 24).toFixed(1) + " " + y(c).toFixed(1); }).join(" "); }
+      var usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+      var TRACK = 820; // inner width of the slider track
+      function setCapital(c) {
+        var all = months(c);
+        document.getElementById("own-v").textContent = (100 * 1000000 / (1000000 + c)).toFixed(1);
+        document.getElementById("cash-v").textContent = usd.format(Math.round(all[24]));
+        document.getElementById("cap-v").textContent = usd.format(Math.round(c / 10000) * 10000);
+        document.getElementById("line").setAttribute("d", pathFor(c));
+        gsap.set("#thumb", { x: (c / 500000) * TRACK });
+        gsap.set("#fill", { scaleX: c / 500000 });
+      }
+      document.getElementById("base").setAttribute("d", pathFor(0));
+      setCapital(200000);
+      document.fonts.ready.then(function () {
+      var trackEl = document.getElementById("track");
+      var TRACK_REAL = trackEl.offsetWidth;
+      var trackBox = { left: 0, top: 0 };
+      for (var n = trackEl; n && n.id !== "root"; n = n.offsetParent) { trackBox.left += n.offsetLeft; trackBox.top += n.offsetTop; }
+      TRACK = TRACK_REAL;
+      setCapital(200000);
+
+      var tl = gsap.timeline({ paused: true });
+      var ease = "power3.out";
+
+      // Scene 1: hook
+      tl.fromTo("#s1-num", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: ease }, 0.27);
+      tl.fromTo("#s1-a", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 0.82);
+      tl.fromTo("#s1-b", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 1.9);
+      tl.to("#s1 .wrap", { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 3.25);
+
+      // Scene 2: reveal
+      tl.fromTo("#s2-lock", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: ease }, 3.6);
+      tl.fromTo("#s2-line", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: ease }, 4.64);
+      tl.to("#s2 .wrap", { opacity: 0, x: -80, duration: 0.35, ease: "power2.in" }, 7.0);
+
+      // Scene 3: simulated drag on the live model
+      tl.fromTo("#s3-cap", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: ease }, 7.35);
+      tl.fromTo("#s3-sub", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 7.79);
+      tl.fromTo("#panel", { x: 120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: ease }, 7.5);
+      // Cursor sits on the slider thumb (track measured before any tween moves the panel).
+      var cx0 = trackBox.left + 0.4 * TRACK, cx1 = trackBox.left + 0.8 * TRACK, cy = trackBox.top + 4;
+      tl.fromTo("#cursor", { x: cx0 + 160, y: cy + 120, opacity: 0 }, { x: cx0, y: cy, opacity: 1, duration: 0.6, ease: "power2.out" }, 8.3);
+      tl.to("#cursor", { scale: 0.8, duration: 0.12 }, 8.9);
+      var cap = { v: 200000 };
+      tl.to(cap, { v: 400000, duration: 2.6, ease: "power1.inOut", onUpdate: function () { setCapital(cap.v); } }, 9.0);
+      tl.to("#cursor", { x: cx1, duration: 2.6, ease: "power1.inOut" }, 9.0);
+      tl.to("#cursor", { scale: 1, duration: 0.12 }, 11.7);
+      tl.to("#cursor", { opacity: 0, duration: 0.3 }, 12.6);
+      tl.to("#s3 h2, #s3 p, #panel", { opacity: 0, duration: 0.3, ease: "power2.in" }, 13.3);
+
+      // Scene 4: cards on every other beat so each one can be read
+      tl.fromTo("#s4-title", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 13.64);
+      tl.fromTo("#c1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 14.2); // beat-grid: 14.20
+      tl.fromTo("#c2", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 15.28); // beat-grid: 15.28
+      tl.fromTo("#c3", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 16.38); // beat-grid: 16.38
+      tl.to("#s4-title, .cards", { opacity: 0, duration: 0.3, ease: "power2.in" }, 17.7);
+
+      // Scene 5: outro
+      tl.fromTo("#s5-tm", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 18.5); // beat-locked: 18.55s
+      tl.fromTo("#s5-name", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 18.8);
+      tl.fromTo("#s5-line", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 19.1);
+      tl.fromTo("#s5-url", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: ease }, 19.3);
+
+      window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>

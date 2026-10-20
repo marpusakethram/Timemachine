@@ -6,3 +6,7 @@ node_modules/
 test-results/
 playwright-report/
 *.tsbuildinfo
+
+# Hyperframes working state and the unlicensed-for-redistribution music source
+brag-output/composition/.hyperframes/
+brag-output/composition/assets/music/

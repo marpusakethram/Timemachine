@@ -1,0 +1,2 @@
+Introducing Time Machine: drag the capital slider and watch your runway and your stake change before you raise. Free, open source, runs in your browser.
+github.com/marpusakethram/Timemachine
