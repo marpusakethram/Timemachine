@@ -1,0 +1,23 @@
+{
+  "note": "Hand-calculated: revenue grows by 1.05 × 0.98 = 1.029; gross profit is 80%; OpEx is 7000.",
+  "firstMonth": {
+    "revenue": 4116,
+    "grossProfit": 3292.8,
+    "cash": 46292.8
+  },
+  "secondMonth": {
+    "revenue": 4235.364,
+    "grossProfit": 3388.2912,
+    "cash": 42681.0912
+  },
+  "zeroRevenue": {
+    "endingCash": -118000,
+    "runway": 8
+  },
+  "pricedRound": {
+    "amount": 200000,
+    "preMoney": 1000000,
+    "investorFraction": 0.16666666666666666,
+    "founderFraction": 0.8333333333333334
+  }
+}

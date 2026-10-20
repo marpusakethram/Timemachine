@@ -1,0 +1,217 @@
+{
+  "id": "10000000-0000-4000-8000-000000000000",
+  "title": "Build patiently. Hire faster. Or raise?",
+  "description": "Our fictional SaaS has $50k in cash and $4k MRR. Should we keep bootstrapping, hire two engineers, or raise $200k?",
+  "baseline": {
+    "values": {
+      "cash": 50000,
+      "revenue": 4000,
+      "expenses": 7000,
+      "margin": 80,
+      "customers": 40,
+      "growth": 5,
+      "churn": 2,
+      "financing": 0,
+      "financingMonth": 1,
+      "valuation": 1000000,
+      "ownership": 100,
+      "capex": 0,
+      "capexMonth": 1,
+      "hiring": 0,
+      "hiringMonth": 3
+    },
+    "currency": "USD",
+    "metadata": {
+      "cash": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "revenue": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "expenses": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "margin": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "customers": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "growth": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "churn": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "financing": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "financingMonth": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "valuation": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "ownership": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "capex": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "capexMonth": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "hiring": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      },
+      "hiringMonth": {
+        "provenance": "sample",
+        "lastEdited": "2026-10-20T00:00:00.000Z",
+        "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+      }
+    }
+  },
+  "branches": [
+    {
+      "name": "Bootstrap conservatively",
+      "thesis": "Keep the team lean and fund operations from customers.",
+      "overrides": {},
+      "risks": [
+        "Growth may not cover recurring costs."
+      ],
+      "signals": [
+        "Cash falls while acquisition slows."
+      ],
+      "experiments": [
+        "Test one low-cost acquisition channel."
+      ],
+      "id": "10000000-0000-4000-8000-000000000001",
+      "actions": [
+        "Keep the team lean and fund operations from customers."
+      ],
+      "metadata": {},
+      "horizon": 24,
+      "reviewed": true
+    },
+    {
+      "name": "Hire two engineers",
+      "thesis": "Add delivery capacity in month 3 with $10,000 in added monthly costs.",
+      "overrides": {
+        "hiring": 10000,
+        "hiringMonth": 3,
+        "growth": 8
+      },
+      "risks": [
+        "Hiring costs arrive before uncertain growth."
+      ],
+      "signals": [
+        "Releases do not improve activation."
+      ],
+      "experiments": [
+        "Validate delivery bottlenecks before hiring."
+      ],
+      "id": "10000000-0000-4000-8000-000000000002",
+      "actions": [
+        "Add delivery capacity in month 3 with $10,000 in added monthly costs."
+      ],
+      "metadata": {
+        "hiring": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        },
+        "hiringMonth": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        },
+        "growth": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        }
+      },
+      "horizon": 24,
+      "reviewed": true
+    },
+    {
+      "name": "Raise $200k",
+      "thesis": "Model a $200,000 round at a hypothetical $1m pre-money valuation.",
+      "overrides": {
+        "financing": 200000,
+        "financingMonth": 1,
+        "valuation": 1000000
+      },
+      "risks": [
+        "The round may not close."
+      ],
+      "signals": [
+        "Investor discussions do not progress."
+      ],
+      "experiments": [
+        "Compare a no-financing case."
+      ],
+      "id": "10000000-0000-4000-8000-000000000003",
+      "actions": [
+        "Model a $200,000 round at a hypothetical $1m pre-money valuation."
+      ],
+      "metadata": {
+        "financing": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        },
+        "financingMonth": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        },
+        "valuation": {
+          "provenance": "sample",
+          "lastEdited": "2026-10-20T00:00:00.000Z",
+          "explanation": "Fictional demo assumption. Not empirical data or a forecast."
+        }
+      },
+      "horizon": 24,
+      "reviewed": true
+    }
+  ],
+  "schema_version": 1,
+  "engine_version": "1.0.0",
+  "createdAt": "2026-10-20T00:00:00.000Z",
+  "updatedAt": "2026-10-20T00:00:00.000Z",
+  "sources": [
+    {
+      "label": "Fictional SaaS sample — illustrative, not empirical",
+      "kind": "sample"
+    }
+  ]
+}
