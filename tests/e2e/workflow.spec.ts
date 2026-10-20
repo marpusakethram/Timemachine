@@ -63,7 +63,7 @@ test("create, validate and import with a mobile keyboard-friendly layout", async
   await expect(page.getByRole("heading", { name: "Our next move" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByLabel("Monthly growth", { exact: true }).fill("-51");
-  await expect(page.getByText("Enter -50–50.")).toBeVisible();
+  await expect(page.getByText("Enter -50 to 50.")).toBeVisible();
   await page.getByLabel("Monthly growth", { exact: true }).fill("7");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByRole("link", { name: "Workbench", exact: true }).click();

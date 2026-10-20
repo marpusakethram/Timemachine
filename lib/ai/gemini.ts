@@ -21,7 +21,7 @@ export function config(env: Record<string, string | undefined> = process.env) {
   }
   const bounded = (name: string, fallback: number, max: number) => {
     const n = Number(env[name] || fallback);
-    if (!Number.isInteger(n) || n < 1 || n > max) throw new AIError(`Invalid ${name}; expected 1–${max}.`);
+    if (!Number.isInteger(n) || n < 1 || n > max) throw new AIError(`Invalid ${name}; expected 1 to ${max}.`);
     return n;
   };
   return {

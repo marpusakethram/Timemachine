@@ -13,7 +13,7 @@ const sample = {
   description: "Our fictional SaaS has $50k in cash and $4k MRR. Should we keep bootstrapping, hire two engineers, or raise $200k?",
   baseline: { values, currency: "USD", metadata: Object.fromEntries(Object.keys(values).map(k => [k, meta()])) },
   branches, schema_version: 1, engine_version: "1.0.0", createdAt: at, updatedAt: at,
-  sources: [{ label: "Fictional SaaS sample — illustrative, not empirical", kind: "sample" }],
+  sources: [{ label: "Fictional SaaS sample, illustrative, not empirical", kind: "sample" }],
 };
 fs.mkdirSync("fixtures", { recursive: true });
 fs.writeFileSync("fixtures/sample-saas.json", JSON.stringify(sample, null, 2) + "\n");
