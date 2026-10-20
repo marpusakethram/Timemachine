@@ -14,18 +14,21 @@ rows.sort((a, b) => a.name.localeCompare(b.name));
 const unknown = rows.filter(r => r.license === "UNKNOWN");
 const content = `# Dependency license inventory
 
-Generated from installed package manifests and the committed lockfile using
-\`node scripts/audit-licenses.mjs\`. This inventory covers the local installation,
-including development tools. Platform-specific optional packages may differ on other
-machines and retain their upstream licenses. No third-party photos, videos or fonts
-are bundled. Lucide icons are ISC; the shadcn-derived button pattern is MIT.
+This file is generated. Run \`node scripts/audit-licenses.mjs\` to rebuild it from the
+installed packages and the committed lockfile. It covers everything installed locally,
+dev tools included. Some optional packages are platform specific, so another machine
+might show a slightly different list. Those keep their own upstream licenses.
 
-Our MIT license applies only to our own source and original diagram. Dependencies
-remain under their listed licenses; retain their notices when redistributing.
-Next.js brings optional Sharp/libvips binaries under Apache-2.0/LGPL terms.
-This repository distributes our source, not those binaries; npm installs the
-upstream packages with their notices. Binary redistributions must preserve
-upstream LGPL obligations and corresponding-source availability.
+What's bundled that isn't code: the Inter font, shipped through
+\`@fontsource-variable/inter\` under the SIL Open Font License 1.1. No third-party
+photos or videos. Lucide icons are ISC and the shadcn style button pattern is MIT.
+
+Our MIT license only covers our own source and the original diagram. Every
+dependency keeps its own license, so keep their notices if you redistribute.
+Next.js pulls in optional Sharp/libvips binaries under Apache-2.0 and LGPL terms.
+This repo ships our source, not those binaries. npm installs them with their own
+notices. If you redistribute the binaries, you have to follow the LGPL rules,
+including making the corresponding source available.
 
 Installed packages: ${rows.length}. Missing license declarations: ${unknown.length}.
 

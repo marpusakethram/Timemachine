@@ -19,7 +19,7 @@ export function NumericField({ name, value, meta, onChange }: { name: Field; val
   const sliderMax = name === "financing" ? Math.max(500000, value) : name === "expenses" ? Math.max(25000, value) : f.max;
   return <div className="numeric-field">
     <div className="field-label"><label htmlFor={`number-${name}`}>{f.label}</label><span title={`${meta.explanation}\nEdited ${meta.lastEdited}`} className={`provenance ${meta.provenance}`}>{meta.provenance}</span></div>
-    <div className="number-wrap"><input id={`number-${name}`} type="number" min={f.min} max={f.max} step={f.unit === "month" || name === "customers" ? 1 : "any"} value={text} onChange={e => update(e.target.value)} aria-invalid={!!error} aria-describedby={`tip-${name}`} /><span>{f.unit}</span></div>
+    <div className={`number-wrap${error ? " invalid" : ""}`}><input id={`number-${name}`} type="number" min={f.min} max={f.max} step={f.unit === "month" || name === "customers" ? 1 : "any"} value={text} onChange={e => update(e.target.value)} aria-invalid={!!error} aria-describedby={`tip-${name}`} /><span>{f.unit}</span></div>
     {["growth", "financing", "expenses", "margin", "churn"].includes(name) && <input aria-label={`${f.label} slider`} type="range" min={f.min} max={sliderMax} step={f.step} value={value} onChange={e => update(e.target.value)} />}
     <small id={`tip-${name}`} className={error ? "error" : "field-tip"}>{error || f.tip}</small>
   </div>;
@@ -28,5 +28,5 @@ export function AssumptionEditor({ values, metadata, onChange, expanded = false 
   const primary: Field[] = ["growth", "expenses", "financing", "valuation"];
   const rest = (Object.keys(fields) as Field[]).filter(k => !primary.includes(k));
   const field = (k: Field) => <NumericField key={k} name={k} value={values[k]} meta={metadata[k]} onChange={v => onChange(k, v)} />;
-  return <>{primary.map(field)}<details open={expanded || undefined}><summary>All assumptions <span>{rest.length}</span></summary>{rest.map(field)}</details></>;
+  return <>{primary.map(field)}<details className="more-fields" open={expanded || undefined}><summary>All assumptions <span className="count">{rest.length}</span></summary>{rest.map(field)}</details></>;
 }

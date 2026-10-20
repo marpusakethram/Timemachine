@@ -1,28 +1,27 @@
-# A 15-second transformation demo
+# The 15 second demo
 
-Run the app, open the fictional SaaS demo, and select the raising branch.
-Use a browser viewport around 1440 × 1000. No Gemini key is needed.
+Run the app, open the fictional SaaS demo, and pick the raise path. A browser window around
+1440 × 1000 works best. You don't need a Gemini key.
 
-| Seconds | Action |
+| Seconds | What happens |
 |---|---|
-| 0–3 | Show the decision and three paths; select Raise $200k |
-| 3–7 | Move the Capital raised slider from 200,000 toward 400,000 |
-| 7–11 | Show the cash curve rise and founder ownership fall from 83.3% to 71.4% |
-| 11–15 | Select Bootstrap conservatively to contrast runway and dilution |
+| 0 to 3 | Show the decision and the three paths, then pick Raise $200k |
+| 3 to 7 | Slide Capital raised from 200,000 toward 400,000 |
+| 7 to 11 | The cash line goes up and founder ownership drops from 83.3% to 71.4% |
+| 11 to 15 | Pick Bootstrap conservatively to compare runway and dilution |
 
-Use Windows Snipping Tool's screen recording or any local recorder. Crop out browser
-chrome and avoid personal tabs. Save MP4/GIF locally; the repository screenshots are
-produced by Playwright, not mockups. The architecture SVG has a separately rendered PNG.
+Want to record it yourself? Any screen recorder works, like the Windows Snipping Tool.
+Crop out the browser bar and close personal tabs. The screenshots in this repo come from
+Playwright, not mockups. The architecture SVG has its own rendered PNG.
 
-The repeatable browser demonstration is in `tests/e2e/demo.spec.ts`; Playwright
-records a WebM video for this test and the release includes a copy when generated.
-The MP4 is a time-condensed 15-second version of that real recording; it does not
-replace the UI with simulated frames. FFmpeg is only used to prepare this optional
-release asset, not required to install or run the app.
+The repeatable version lives in `tests/e2e/demo.spec.ts`. Playwright records a WebM of the
+real app while it runs. The MP4 and WebM in `docs/media` show the real app too, built from
+real browser frames of the same steps, not fake animation. FFmpeg is only used to package
+those files. You don't need it to install or run the app.
 
-Launch text:
+Launch blurb you can copy:
 
-> Time Machine is an open-source decision lab for founders. Compare bootstrapping,
-> hiring and a hypothetical raise, then move the assumptions to see cash runway
-> and ownership change immediately. Local-first, no signup, no required API key.
-> Conditional models, not predictions or financial advice.
+> Time Machine is an open source decision modeling tool for startup teams. Compare
+> bootstrapping, hiring and a hypothetical raise, then move the assumptions and watch
+> runway and ownership change instantly. Runs in your browser, no signup, no API key
+> needed. These are "what if" models, not predictions or financial advice.

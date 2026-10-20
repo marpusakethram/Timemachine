@@ -1,16 +1,25 @@
 # Time Machine
 
-**Don't ask what happens. Move the assumptions.**
+**Move the assumptions. See the runway.**
 
-A local-first startup decision lab: frame a dilemma, select one of three branches,
-move a capital or growth slider, and see runway and ownership recalculate.
-These are conditional models, not forecasts or investment recommendations.
+Time Machine is a decision modeling tool for early-stage teams. You frame a decision,
+compare three paths side by side, move a number like capital raised or monthly growth,
+and watch runway, cash and founder ownership update right away.
 
-![Time Machine live decision preview](docs/screenshots/home.png)
+It runs in your browser. No account, no bank login, no API key. The outputs are
+"what if" models, not forecasts and not investment advice.
 
-## Run it
+![Time Machine home page with a live model preview](docs/screenshots/home.png)
 
-Requires **Node.js 22.12+** and npm. No account, API key, paid service or database needed.
+## Who it's for
+
+- **Founders** deciding whether to bootstrap, hire or raise.
+- **Finance and ops leads** who want a quick, honest model before building a full spreadsheet.
+- **Anyone prepping a board or investor chat** who needs the trade-offs on one page.
+
+## Get it running
+
+You need **Node.js 22.12 or newer** and npm. That's it. No database, no paid service.
 
 ```sh
 git clone https://github.com/marpusakethram/Timemachine.git
@@ -19,17 +28,17 @@ npm ci
 npm run dev
 ```
 
-Open **http://127.0.0.1:3000** and choose **Open the fictional SaaS demo**.
-After dependencies are installed, the flagship interaction takes less than a minute:
+Open **http://127.0.0.1:3000** and click **Open the fictional SaaS demo**.
+The main thing to try takes under a minute:
 
-1. Select **Raise $200k**.
+1. Pick **Raise $200k** in the path switcher.
 2. Move **Capital raised** from 200,000 to 400,000.
-3. Watch the cash curve rise and founder ownership change from **83.3% to 71.4%**.
-4. Compare the bootstrap and hiring paths, then export JSON or CSV.
+3. Watch the cash line go up and founder ownership drop from **83.3% to 71.4%**.
+4. Flip to the bootstrap and hiring paths to compare, then export JSON or CSV.
 
-The demo performs no cloud calls. Save writes to this browser's localStorage.
-Export JSON for backups or to move a scenario to another computer. Each user runs
-their own copy; browser data is not shared with other users.
+The demo makes zero cloud calls. Hitting Save writes to your browser's localStorage.
+Export JSON if you want a backup or want to move a scenario to another computer.
+Everyone runs their own copy, so nobody else sees your browser data.
 
 For a production build:
 
@@ -38,80 +47,84 @@ npm run build
 npm start
 ```
 
-The server binds to loopback by default. Dependencies require internet for installation;
-the installed no-key simulator works locally without internet. Node is the only runtime
-requirement. Any editor, VS Code, Laya or coding agent can work with this source.
+The server only listens on localhost by default. You need internet to install
+dependencies, but once installed the simulator works fully offline. Node is the
+only thing you need at runtime, and any editor or coding agent can work on the source.
 
-## What works
+## What you get
 
-- Create, validate, edit, save, reload, delete and import dilemmas.
-- Fully implemented **Bootstrap vs Raise** template with a third hiring branch.
-- Immediate deterministic recomputation, 24 monthly rows, cash curves and branch comparison.
-- Starting cash, revenue, expenses, margins, growth, churn, customers, financing,
-  pre-money valuation, founder ownership, one-time capex and hiring step changes.
-- Every numeric field has units, allowed range, default, provenance, explanation
-  and last-edited time (hover the provenance badge).
-- Baseline inheritance, branch overrides, reset to baseline and metric sorting.
-- One-variable growth sensitivity and two-variable growth/expense runway heatmap.
-- JSON import/export, selected-branch CSV, PNG snapshot and small hash-encoded share links.
-- Optional Gemini candidate generation with consent, review and preservation of edited numbers.
-- Keyboard branch buttons, mobile layout, focus states and reduced-motion support.
-- A live home-page model and a chart-first workspace, with HyperFrames-inspired
-  visual hierarchy and restrained motion. See [design direction](docs/DESIGN.md).
+- Create, check, edit, save, reload, delete and import decisions.
+- A ready to go **Bootstrap vs raise** template, with a third path for hiring.
+- Instant, repeatable math: 24 monthly rows, cash curves and a side by side comparison.
+- A KPI strip for the selected path: runway, ending cash, funding gap and founder ownership.
+- Inputs for starting cash, revenue, expenses, margin, growth, churn, customers, financing,
+  pre-money valuation, founder ownership, one-time capex and a hiring cost step.
+- Every number has units, allowed range, a default, a source tag (sample, entered or
+  inferred), an explanation and a last edited time. Hover the tag to see it.
+- Baseline values flow into every path unless that path overrides them. You can reset a
+  path back to baseline and sort paths by runway or ending cash.
+- A growth sensitivity chart plus a growth by spending runway grid.
+- JSON import and export, a monthly CSV for the selected path, a PNG snapshot and small
+  share links.
+- Optional Gemini suggestions, with consent, a review step, and your own edits always kept.
+- Keyboard friendly path buttons, a mobile layout, visible focus states and reduced motion support.
+- A clean, light, B2B style interface. See the [design notes](docs/DESIGN.md).
 
-Other starter templates are intentionally hidden until their economics are implemented.
+Other starter templates stay hidden until their math is actually built.
 
-## Architecture
+## How it's built
 
 ![Layered Time Machine architecture](docs/architecture.svg)
 
-[Architecture note](docs/ARCHITECTURE.md) · [SVG source](docs/architecture.svg) ·
+[Architecture notes](docs/ARCHITECTURE.md) · [SVG source](docs/architecture.svg) ·
 [PNG diagram](docs/architecture.png) · [Assumptions and equations](docs/ASSUMPTIONS.md)
 
-Next.js App Router + TypeScript + Tailwind + a shadcn-derived button + React Flow +
-Recharts + Zod. The engine has no React or model dependency. Browser storage avoids
-a server database; server disk is used only for optional AI budgets and cache.
+Next.js App Router, TypeScript, Tailwind, a shadcn style button, React Flow, Recharts
+and Zod. The Inter font ships locally through Fontsource, so there are no remote font calls.
+The math engine has zero React or AI dependencies. Data lives in browser storage, so there's
+no server database. The server disk is only used for the optional AI budget and cache.
 
-## Optional Gemini setup — default is off
+## Optional Gemini setup (off by default)
 
 1. Copy `.env.example` to `.env.local`.
-2. Use a Gemini project **without billing enabled**. Never enable billing for this app.
-3. Personally verify a model's **standard free-tier input and output availability** on
-   [Google's official pricing page](https://ai.google.dev/gemini-api/docs/pricing).
-4. Put its exact identifier in `GEMINI_MODEL` and `FREE_MODEL_ALLOWLIST`. No model is
-   preselected. Set `FREE_MODEL_VERIFIED_ON` to your verification date (`YYYY-MM-DD`);
-   verification expires after 30 days.
+2. Use a Gemini project **with billing turned off**. Don't turn billing on for this app.
+3. Check for yourself that the model you want has **free tier input and output** on
+   [Google's pricing page](https://ai.google.dev/gemini-api/docs/pricing).
+4. Put the exact model ID in both `GEMINI_MODEL` and `FREE_MODEL_ALLOWLIST`. Nothing is
+   picked for you. Set `FREE_MODEL_VERIFIED_ON` to the date you checked (`YYYY-MM-DD`).
+   That check expires after 30 days.
 5. Set `GEMINI_UNBILLED_PROJECT_CONFIRMED=true` only for that unbilled project, and set
-   `GEMINI_API_KEY` server-side. Restart the server.
-6. In the workspace, confirm that the dilemma is non-confidential and click
-   **Generate candidates**. Review or edit inferred values, then explicitly apply them.
+   `GEMINI_API_KEY` on the server. Restart the server.
+6. In the workspace, confirm the decision isn't confidential and click
+   **Generate candidates**. Review or tweak the suggested numbers, then apply them yourself.
 
-Google documents that free-tier availability varies by model and free-tier inputs may
-be used to improve its products. Do not send private business documents, credentials,
-secrets or confidential information. The app cannot reliably verify billing status or
-free eligibility through `models.list`; operator confirmation is required, not a
-guarantee of price or quota. No paid failover, browsing, grounding or extra AI services.
+Heads up: Google says free tier availability depends on the model, and free tier inputs
+can be used to improve their products. So don't send private docs, credentials, secrets
+or anything confidential. The app can't reliably confirm billing status or free tier
+eligibility through `models.list`, which is why you have to confirm it. That's not a
+price or quota guarantee. There's no paid fallback, no browsing, no grounding and no
+other AI services.
 
-The connector uses the official `@google/genai` SDK and structured JSON output.
-Defaults: **10 requests per UTC day**, **3 total attempts per run**, **3,000 output
-tokens**, **16 KB serialized input cap**, **20-second timeout per attempt**.
-Every attempted provider request consumes budget, including failed requests. The SDK's
-own retries are disabled; local bounded retries back off on 429/transient server errors.
-There is at most one schema-correction retry within that same per-run cap.
+The connector uses Google's official `@google/genai` SDK with structured JSON output.
+Defaults: **10 requests per UTC day**, **3 attempts per run**, **3,000 output tokens**,
+**16 KB max input**, and a **20 second timeout per attempt**. Every attempt counts against
+the budget, even failed ones. The SDK's own retries are off. Our local retries back off
+on 429s and temporary server errors, and there's at most one schema fix retry inside the
+same per-run cap.
 
-Validated responses are cached by SHA-256 of model + prompt version + input. Cache
-hits do not consume a request. The UI makes failures visible and offers the local
-template; it never fabricates a successful AI response. Test fixtures are labeled.
+Good responses get cached by a SHA-256 hash of model, prompt version and input. Cache hits
+don't use up a request. Failures show up clearly in the UI with the local template as a
+fallback. The app never fakes a successful AI answer. Test fixtures are labeled as fixtures.
 
-`.data/quota.json` and `.data/cache/` are local and gitignored. A disk lock prevents
-concurrent servers sharing this directory from exceeding the budget. If the process
-crashes while holding `.data/quota.lock`, stop all app processes and remove **only
-that empty lock directory**, preserving `quota.json`. Corrupt quota data fails closed.
-Do not delete or replace the ledger to bypass your request limit.
+`.data/quota.json` and `.data/cache/` stay local and are gitignored. A disk lock stops
+multiple servers sharing that folder from blowing past the budget. If the app crashes while
+holding `.data/quota.lock`, stop every app process and delete **only that empty lock
+folder**. Keep `quota.json`. If the quota file is corrupt, the app fails closed. Don't
+delete or swap the ledger to get around your request limit.
 
-## Equations
+## The math
 
-For each month, with percentage inputs converted to fractions:
+Each month, with percentages turned into fractions:
 
 ```text
 revenue[t] = revenue[t−1] × (1 + growth) × (1 − churn)
@@ -124,21 +137,20 @@ investor_fraction = investment / (pre_money + investment)
 founder_ownership_after = founder_ownership_before × pre_money / (pre_money + investment)
 ```
 
-Cash received and revenue recognized are assumed to coincide; no receivables,
-taxes, debt, interest or deferred revenue. Runway is the **first** month ending cash
-is ≤ 0 (or month zero when starting cash is zero). “Beyond 24 mo” means only that
-the cash balance stayed positive during this horizon. Late financing cannot undo
-an earlier shortfall. Financing is received at the beginning of its specified month;
-within-month liquidity is not modeled.
+We assume you collect cash in the same month you book revenue. No receivables, taxes,
+debt, interest or deferred revenue. Runway is the **first** month ending cash hits zero
+or below (or month zero if you start with zero cash). "Beyond 24 mo" just means cash
+stayed positive for the whole 24 months. Late funding can't undo an earlier shortfall.
+Funding lands at the start of its month, and we don't model cash timing inside a month.
 
-Funding gap is the extra cash needed **at month zero** to keep every modeled month
-strictly above zero, rounded upward to a cent. It is not a recommended raise.
-Dilution is a single simplified priced round; unknown valuation suppresses it.
+The funding gap is the extra cash you'd need **at month zero** to keep every month
+above zero, rounded up to the cent. It's not a suggested raise amount. Dilution uses one
+simple priced round, and an unknown valuation hides it.
 
-## Exact sample
+## The sample numbers
 
-The complete, importable versioned fixture is [fixtures/sample-saas.json](fixtures/sample-saas.json).
-Its numerical baseline is:
+The full, importable fixture lives at [fixtures/sample-saas.json](fixtures/sample-saas.json).
+Its baseline:
 
 ```json
 {
@@ -160,12 +172,12 @@ Its numerical baseline is:
 }
 ```
 
-All are fictional USD assumptions. The hiring path adds 10,000/month from month 3
-and assumes 8% gross monthly growth. The raising path receives 200,000 in month 1
-at a hypothetical 1,000,000 pre-money valuation. These choices are editable;
-the model does not claim hiring causes growth.
+All of it is made up, in USD. The hiring path adds 10,000 a month from month 3 and
+assumes 8% gross monthly growth. The raise path gets 200,000 in month 1 at a made up
+1,000,000 pre-money valuation. You can change all of it. The model doesn't claim
+hiring causes growth.
 
-## Verify it
+## Check that it works
 
 ```sh
 npm run typecheck
@@ -176,51 +188,52 @@ npm run test:e2e
 node scripts/audit-licenses.mjs
 ```
 
-| Coverage | What is checked |
+| Area | What gets checked |
 |---|---|
-| Cash engine | Hand-calculated golden months, zero revenue/burn, negative growth, 0/100% margin and churn |
-| Financing | Month 1/24 boundaries, prior cash failure, capex and hiring timing, unknown valuation |
-| Determinism | Stable input fingerprints, fixed-timestamp snapshots, defaults, outliers and sensitivity |
-| Data boundaries | Corrupt/oversized import, schema versions, UUIDs, provenance, Unicode shares and CSV rows |
-| AI safety | Missing key/consent, operator eligibility, request size, durable/concurrent quotas, corrupt ledger |
-| Browser | Create → branch → edit → save/reload → export, no-key error, mobile layout and candidate review |
+| Cash engine | Hand calculated golden months, zero revenue or burn, negative growth, 0 and 100% margin and churn |
+| Financing | Month 1 and 24 edges, earlier cash failure, capex and hiring timing, unknown valuation |
+| Repeatability | Stable input fingerprints, fixed timestamp snapshots, defaults, outliers and sensitivity |
+| Data safety | Broken or oversized imports, schema versions, UUIDs, source tags, Unicode share links and CSV rows |
+| AI safety | Missing key or consent, operator checks, request size, durable and concurrent quotas, corrupt ledger |
+| Browser | Create, pick a path, edit, save and reload, export, the no-key error, mobile layout and AI review |
 
-See [verification results](docs/VERIFICATION.md), [demo recording guide](docs/DEMO.md)
-and the [condensed 15-second browser recording](docs/media/transformation.mp4)
-([full recording](docs/media/transformation.webm)).
-The screenshots in [docs/screenshots](docs/screenshots) show the real application. No live Gemini result
-is claimed without a configured, verified key.
+See the [verification results](docs/VERIFICATION.md), the [demo guide](docs/DEMO.md)
+and the [15 second recording](docs/media/transformation.mp4)
+([WebM version](docs/media/transformation.webm)).
+The screenshots in [docs/screenshots](docs/screenshots) are of the real app. We don't
+claim any live Gemini result without a configured, verified key.
 
-![Interactive model workspace](docs/screenshots/workspace.png)
+![The model workspace](docs/screenshots/workspace.png)
 
-## Sharing and deployment
+## Sharing and hosting
 
-GitHub contains the complete source. Others can clone and run the commands above.
-No hosting account or required spend. A hash share contains the full scenario in the
-URL fragment; anyone with the link can read it. It is not encryption. Localhost links
-need the origin changed to the recipient's running app address. Large scenarios use JSON.
+The full source is on GitHub, so anyone can clone it and run the commands above. You don't
+need a hosting account or any spend. A share link packs the whole scenario into the URL
+fragment, so anyone with the link can read it. It's not encrypted. Links made on localhost
+need the start of the URL swapped for the other person's app address. Big scenarios should
+go through JSON instead.
 
-Optional public hosting is not configured: no host or payment is required. A public
-instance should keep Gemini disabled unless access is restricted; otherwise visitors
-could consume its small shared quota. File budgets require durable local disk and a
-shared directory per deployment. Ephemeral/serverless or multiple-host deployments
-need an appropriate shared quota store before enabling Gemini.
+There's no public hosting set up, and none is needed. If you do host it publicly, keep
+Gemini off unless you lock down access, or visitors could burn through your small shared
+quota. The file based budget needs a durable local disk and one shared folder per
+deployment. Serverless or multi-host setups need a proper shared quota store before you
+turn Gemini on.
 
 ## Honest limits
 
-- Monthly, constant-rate conditional model; no uncertainty probabilities or market data.
-- Only one priced financing round; no SAFEs, option pools, liquidation preferences or later rounds.
-- Growth, churn and margin remain fixed; customer counts are illustrative.
-- Negative cash curves continue to expose the gap; they do not imply operations can continue.
-- Browser storage is limited to 50 scenarios, can be cleared, and has no cross-device sync.
-- Unsaved edits are guarded on reload and app navigation; browser crash can still lose them.
-- No accounts, teams, bank connections, payments, execution of generated code or third-party PRs.
-- Currency changes relabel numbers; no exchange-rate conversion.
-- PNG depends on browser canvas support; browser screenshots are the fallback.
-- Operator verification cannot guarantee continuing provider free eligibility or quota.
+- Monthly model with constant rates. No probabilities and no market data.
+- One priced round only. No SAFEs, option pools, liquidation preferences or later rounds.
+- Growth, churn and margin stay fixed. Customer counts are just illustrative.
+- Negative cash lines keep going to show the gap. That doesn't mean the business keeps running.
+- Browser storage holds up to 50 scenarios, can get wiped, and doesn't sync across devices.
+- You get a warning before leaving with unsaved edits, but a browser crash can still lose them.
+- No accounts, teams, bank connections, payments, running generated code or outside PRs.
+- Switching currency only changes the label. There's no exchange rate conversion.
+- PNG export needs browser canvas support. A normal screenshot is the fallback.
+- Operator checks can't promise a provider keeps a model free or keeps its quota.
 
-## Contribute and license
+## Contributing and license
 
-See [CONTRIBUTING](CONTRIBUTING.md). Original code and diagram are [MIT](LICENSE).
-Dependencies and their notices retain their own licenses; see the generated
-[third-party license inventory](docs/THIRD_PARTY_LICENSES.md).
+See [CONTRIBUTING](CONTRIBUTING.md). Our code and diagram are [MIT](LICENSE).
+Dependencies keep their own licenses. See the generated
+[third-party license list](docs/THIRD_PARTY_LICENSES.md).
